@@ -11,14 +11,21 @@ from htdp_pt_br.universe import *
 (LARGURA, ALTURA) = (700, 700)
 tela = criar_tela_base(LARGURA, ALTURA)
 
-#Criar/carregar imagens:
-IMG_PERSONAGEM = carregar_imagem("fantasma.png")
-IMG_PERSONAGEM = definir_dimensoes(IMG_PERSONAGEM, 80, 120)
+'''Imagens'''
+MAPA = carregar_imagem('./Imagens/mapa.png')
+PERSONAGEM = carregar_imagem('./Imagens/fantasma.png')
+PASSARALHO = carregar_imagem('./Imagens/passaralho.png')
+TIRO = carregar_imagem('./Imagens/naosei.png')
 
-LIMITE_ESQUERDO = 0 + largura_imagem(IMG_PERSONAGEM) // 2
-LIMITE_DIREITO = LARGURA - (largura_imagem(IMG_PERSONAGEM) // 2)
-LIMITE_CIMA = 0 + altura_imagem(IMG_PERSONAGEM) // 2
-LIMITE_BAIXO = ALTURA - (altura_imagem(IMG_PERSONAGEM) // 2)
+MAPA = definir_dimensoes(MAPA,LARGURA,ALTURA)
+PERSONAGEM = definir_dimensoes(PERSONAGEM,55,80)
+PASSARALHO = definir_dimensoes(PASSARALHO,80,80)
+TIRO = definir_dimensoes(TIRO,60,14)
+
+LIMITE_ESQUERDO = 0 + largura_imagem(PERSONAGEM) // 2
+LIMITE_DIREITO = LARGURA - (largura_imagem(PERSONAGEM) // 2)
+LIMITE_CIMA = 0 + altura_imagem(PERSONAGEM) // 2
+LIMITE_BAIXO = ALTURA - (altura_imagem(PERSONAGEM) // 2)
 
 
 VEL_PERSONAGEM = 5
@@ -50,8 +57,11 @@ def mover_perso(per):
 desenha: Personagem -> Imagem
 Desenha...'''
 
-def desenha_perso(per):
-    colocar_imagem(IMG_PERSONAGEM, tela, per.x, per.y)
+def desenha(per):
+    colocar_imagem(MAPA,tela,LARGURA//2,ALTURA//2)
+    colocar_imagem(TIRO, tela, 400, 200)
+    colocar_imagem(PASSARALHO, tela, 600, 200)
+    colocar_imagem(PERSONAGEM, tela, per.x, per.y)
 
 
 '''
@@ -93,7 +103,7 @@ def trata_solta(per,tecla):
 ''' EstadoMundo -> EstadoMundo '''
 ''' inicie o mundo com ... '''
 def main(inic):
-    big_bang(inic, tela=tela, frequencia=50, quando_tick=mover_perso,desenhar=desenha_perso, quando_tecla=trata_tecla,quando_solta_tecla=trata_solta, modo_debug=True)
+    big_bang(inic, tela=tela, frequencia=50, a_cada_tick=mover_perso,desenhar=desenha, quando_tecla=trata_tecla,quando_solta_tecla=trata_solta, modo_debug=True)
 
 main(Personagem(100, 100, 0, 0))
 
