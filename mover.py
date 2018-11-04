@@ -17,6 +17,10 @@ PERSONAGEM = carregar_imagem('./Imagens/fantasma.png')
 PASSARALHO = carregar_imagem('./Imagens/passaralho.png')
 TIRO = carregar_imagem('./Imagens/naosei.png')
 
+#Criar/carregar imagens:
+IMG_PERSONAGEM = carregar_imagem("Imagens/fantasma.png")
+IMG_PERSONAGEM = definir_dimensoes(IMG_PERSONAGEM, 60, 80)
+
 MAPA = definir_dimensoes(MAPA,LARGURA,ALTURA)
 PERSONAGEM = definir_dimensoes(PERSONAGEM,55,80)
 PASSARALHO = definir_dimensoes(PASSARALHO,80,80)
