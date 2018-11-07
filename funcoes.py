@@ -5,8 +5,6 @@ from constantes import *
 from def_dados import *
 
 
-
-
 def mover_perso(per):
     posicao_x = per.x + per.dx
     posicao_y = per.y + per.dy

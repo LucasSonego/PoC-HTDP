@@ -23,10 +23,10 @@ PERSONAGEM_LEFT = espelhar(PERSONAGEM_BASE, True, False)
 
 PERSONAGEM_RIGHT = PERSONAGEM_BASE
 
-PERSONAGEM_UP = carregar_imagem('./Imagens/fantasma_costas')
+PERSONAGEM_UP = carregar_imagem('./Imagens/fantasma_costas.png')
 PERSONAGEM_UP = definir_dimensoes(PERSONAGEM_UP, 55, 80)
 
-PERSONAGEM_DOWN = carregar_imagem('./Imagens/fantasma_frente')
+PERSONAGEM_DOWN = carregar_imagem('./Imagens/fantasma_frente.png')
 PERSONAGEM_DOWN = definir_dimensoes(PERSONAGEM_DOWN, 55, 80)
 
 PERSONAGEM_ALTURA = altura_imagem(PERSONAGEM_BASE)
@@ -44,8 +44,8 @@ TIRO = carregar_imagem('./Imagens/tiro.png')
 TIRO = definir_dimensoes(TIRO,60,14)
 TIRO_LEFT = espelhar(TIRO,True,False)
 TIRO_RIGHT = TIRO
-TIRO_UP = girar(TIRO,-90)
-TIRO_DOWN = girar(TIRO,90)
+TIRO_UP = girar(TIRO,90)
+TIRO_DOWN = girar(TIRO,-90)
 
 
 '''Constantes'''

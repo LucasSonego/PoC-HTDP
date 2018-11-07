@@ -1,28 +1,23 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from htdp_pt_br.universe import *
-
-'''Tela'''
-
-ALTURA = 700
-LARGURA = 700
-tela = criar_tela_base(LARGURA,ALTURA)
+from constantes import *
 
 '''Imagens'''
-FUNDO = carregar_imagem('./Imagens/layout1.png')
-FANTASMA = carregar_imagem('./Imagens/fantasma_lado.png')
-PASSARALHO = carregar_imagem('./Imagens/passaralho.png')
-TIRO = carregar_imagem('./Imagens/tiro.png')
 
-FUNDO = definir_dimensoes(FUNDO,LARGURA,ALTURA)
-FANTASMA = definir_dimensoes(FANTASMA,55,80)
-PASSARALHO = definir_dimensoes(PASSARALHO,80,80)
-TIRO = definir_dimensoes(TIRO,60,14)
+tela = colocar_imagem(IMG_LAYOUT_1,tela,LARGURA//2,ALTURA//2)
+tela = colocar_imagem(PERSONAGEM_LEFT,tela,100,100)
+tela = colocar_imagem(PERSONAGEM_RIGHT,tela,100,200)
+tela = colocar_imagem(PERSONAGEM_UP,tela,100,300)
+tela = colocar_imagem(PERSONAGEM_DOWN,tela,100,400)
 
-tela = colocar_imagem(FUNDO,tela,LARGURA//2,ALTURA//2)
-tela = colocar_imagem(FANTASMA,tela,100,200)
-tela = colocar_imagem(TIRO,tela,400,200)
-tela = colocar_imagem(PASSARALHO,tela,600,200)
+tela = colocar_imagem(TIRO_LEFT,tela,200,100)
+tela = colocar_imagem(TIRO_RIGHT,tela,200,200)
+tela = colocar_imagem(TIRO_UP,tela,200,300)
+tela = colocar_imagem(TIRO_DOWN,tela,200,400)
+
+tela = colocar_imagem(INIMIGO_LEFT,tela,300,100)
+tela = colocar_imagem(INIMIGO_RIGHT,tela,300,200)
+
 
 colocar_imagem_sobre_tela_e_mostrar(tela,LARGURA//2,ALTURA//2)
