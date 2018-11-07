@@ -10,10 +10,10 @@ LARGURA = 700
 tela = criar_tela_base(LARGURA,ALTURA)
 
 '''Imagens'''
-FUNDO = carregar_imagem('./Imagens/mapa.png')
-FANTASMA = carregar_imagem('./Imagens/fantasma.png')
+FUNDO = carregar_imagem('./Imagens/layout1.png')
+FANTASMA = carregar_imagem('./Imagens/fantasma_lado.png')
 PASSARALHO = carregar_imagem('./Imagens/passaralho.png')
-TIRO = carregar_imagem('./Imagens/naosei.png')
+TIRO = carregar_imagem('./Imagens/tiro.png')
 
 FUNDO = definir_dimensoes(FUNDO,LARGURA,ALTURA)
 FANTASMA = definir_dimensoes(FANTASMA,55,80)
