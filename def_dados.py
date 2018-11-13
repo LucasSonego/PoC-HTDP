@@ -16,8 +16,11 @@ posi = LEFT / RIGHT / UP / DOWN (direção)
 '''
 Tiro = definir_estrutura("Tiro", "x, y, posi")
 
+
 '''Jogo:
 contem as estruturas Personagem e Tiro
 '''
 Jogo = definir_estrutura("Jogo","Personagem, Tiro")
+
+
 

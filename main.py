@@ -3,6 +3,7 @@
 
 from funcoes import *
 from constantes import *
+from def_dados import *
 
 def main(inic):
     big_bang(inic,

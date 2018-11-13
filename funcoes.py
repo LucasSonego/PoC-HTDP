@@ -31,8 +31,8 @@ def mover_tiro(pow):
 
 
 def mover_jogo(jogo):
-    per=mover_perso(jogo.personagem)
-    tir=mover_tiro(jogo.tiro)
+    per=mover_perso(jogo.Personagem)
+    tir=mover_tiro(jogo.Tiro)
     return Jogo(per, tir)
 '''
 desenha: Personagem -> Imagem
@@ -43,14 +43,32 @@ Desenha...'''
 
 def desenha(per):
     colocar_imagem(IMG_LAYOUT_1,tela,LARGURA//2,ALTURA//2)
-    colocar_imagem(PERSONAGEM, tela, per.x, per.y)
+    if per.posi == 1:
+        colocar_imagem(PERSONAGEM_UP, tela, per.x, per.y)
+    elif per.posi == 2:
+        colocar_imagem(PERSONAGEM_LEFT, tela, per.x, per.y)
+    elif per.posi == 3:
+        colocar_imagem(PERSONAGEM_DOWN, tela, per.x, per.y)
+    elif per.posi == 4:
+        colocar_imagem(PERSONAGEM_RIGHT, tela, per.x, per.y)
+    else:
+        colocar_imagem(PERSONAGEM_DOWN,tela,per.x,per.y)
+
 
 def desenha_tiro(pow):
-    colocar_imagem(TIRO, tela, pow.x, pow.y)
+    if pow.posi == 1:
+        colocar_imagem(TIRO_UP, tela, pow.x, pow.y)
+    if pow.posi == 2:
+        colocar_imagem(TIRO_LEFT, tela, pow.x, pow.y)
+    if pow.posi == 3:
+        colocar_imagem(TIRO_DOWN, tela, pow.x, pow.y)
+    if pow.posi == 4:
+        colocar_imagem(TIRO_RIGHT, tela, pow.x, pow.y)
+
 
 def desenha_jogo(jogo):
-    desenha(jogo.personagem)
-    desenha_tiro(jogo.tiro)
+    desenha(jogo.Personagem)
+    desenha_tiro(jogo.Tiro)
 
 '''
 trata_tecla: Personagem, Tecla -> Personagem
@@ -74,8 +92,8 @@ def trata_tecla_tiro(pow, tecla):
 
 
 def trata_tecla_jogo(jogo, tecla):
-    xips = trata_tecla(jogo.personagem, tecla)
-    tir=trata_tecla_tiro(Tiro(jogo.personagem.x, jogo.personagem.y, jogo.personagem.posi), tecla)
+    xips = trata_tecla(jogo.Personagem, tecla)
+    tir=trata_tecla_tiro(Tiro(jogo.Personagem.x, jogo.Personagem.y, jogo.Personagem.posi), tecla)
     return Jogo(xips, tir)
 
 '''
@@ -99,17 +117,6 @@ def trata_solta_tiro(pow, tecla):
     return pow
 
 def trata_tecla_solta_jogo(jogo, tecla):
-    xops=trata_solta(jogo.personagem, tecla)
-    tir=trata_solta_tiro(jogo.tiro, tecla)
+    xops=trata_solta(jogo.Personagem, tecla)
+    tir=trata_solta_tiro(jogo.Tiro, tecla)
     return Jogo(xops, tir)
-
-''' ================= '''
-''' Main (Big Bang):
-'''
-
-''' EstadoMundo -> EstadoMundo '''
-''' inicie o mundo com ... '''
-def main(inic):
-    big_bang(inic, tela=tela, frequencia=50, a_cada_tick=mover_jogo,desenhar=desenha_jogo, quando_tecla=trata_tecla_jogo,quando_solta_tecla=trata_tecla_solta_jogo, modo_debug=True)
-
-main(Jogo(Personagem(100, 100, 0, 0, 0), Tiro(100,100,0)))
