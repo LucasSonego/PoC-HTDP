@@ -8,14 +8,13 @@ x e y = posição do personagem na tela
 dx e dy = a Variação de x e y
 posi = LEFT / RIGHT / UP / DOWN (direção)
 '''
-Personagem = definir_estrutura("Personagem", "x, y, dx, dy, posi")
+Personagem = definir_estrutura("Personagem", "x, y, dx, dy, direcao")
 
 '''Tiro:
 x e y = posição do tiro na tela
-posi = LEFT / RIGHT / UP / DOWN (direção)
+direcao = LEFT / RIGHT / UP / DOWN (direção)
 '''
-Tiro = definir_estrutura("Tiro", "x, y, posi")
-
+Tiro = definir_estrutura("Tiro", "x, y, direcao")
 
 '''Jogo:
 contem as estruturas Personagem e Tiro

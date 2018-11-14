@@ -8,7 +8,7 @@ from def_dados import *
 def main(inic):
     big_bang(inic,
              tela=tela,
-             frequencia=50,
+             frequencia=FREQUENCIA,
              a_cada_tick=mover_jogo,
              desenhar=desenha_jogo,
              quando_tecla=trata_tecla_jogo,
