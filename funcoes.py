@@ -85,16 +85,18 @@ def trata_tecla(per, tecla):
         return Personagem(per.x, per.y, VEL_PERSONAGEM, 0, 4)
     return per
 
-def trata_tecla_tiro(pow, tecla):
+def trata_tecla_tiro(jog, tecla):
     if tecla == pg.K_SPACE:
-        return Tiro(pow.x, pow.y, pow.posi)
-    return pow
-
+        tiro_x=jog.Personagem.x
+        tiro_y=jog.Personagem.y
+        return Tiro(tiro_x, tiro_y, jog.Personagem.posi)
+    #else
+    return jog.Tiro
 
 def trata_tecla_jogo(jogo, tecla):
-    xips = trata_tecla(jogo.Personagem, tecla)
-    tir=trata_tecla_tiro(Tiro(jogo.Personagem.x, jogo.Personagem.y, jogo.Personagem.posi), tecla)
-    return Jogo(xips, tir)
+    per = trata_tecla(jogo.Personagem, tecla)
+    tir = trata_tecla_tiro(jogo, tecla)
+    return Jogo(per, tir)
 
 '''
 trata_tecla: Personagem, Tecla -> Personagem
@@ -111,12 +113,12 @@ def trata_solta(per,tecla):
         return Personagem(per.x, per.y, 0, per.dy, per.posi)
     return per
 
-def trata_solta_tiro(pow, tecla):
+def trata_solta_tiro(tiro, tecla):
     if tecla==pg.K_SPACE:
-        return pow
-    return pow
+        return tiro
+    return tiro
 
 def trata_tecla_solta_jogo(jogo, tecla):
-    xops=trata_solta(jogo.Personagem, tecla)
+    per=trata_solta(jogo.Personagem, tecla)
     tir=trata_solta_tiro(jogo.Tiro, tecla)
-    return Jogo(xops, tir)
+    return Jogo(per, tir)
