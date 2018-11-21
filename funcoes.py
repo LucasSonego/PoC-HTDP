@@ -116,6 +116,14 @@ def mover_tiro(tiro):
         return Tiro(novo, tiro.y, tiro.direcao)
     return tiro
 
+def mover_tiros(tir):
+    '''
+    Chama a funcao de mover_tiro para a lista de tiros
+    :param tir: Tiro
+    :return: Tiro
+    '''
+    return [mover_tiro(tiro) for tiro in tir]
+
 def mover_jogo(jogo):
     '''
     função que é chamada no 'big bang' a cada tick
@@ -124,9 +132,9 @@ def mover_jogo(jogo):
     :return: Jogo
     '''
     personagem=mover_perso(jogo.personagem)
-    tiro=mover_tiro(jogo.tiro)
+    tiros=mover_tiros(jogo.tiro)
     inimigo=mover_inimigo(jogo.inimigo,jogo.personagem)
-    return Jogo(personagem, tiro, inimigo)
+    return Jogo(personagem, tiros, inimigo)
 
 
 def desenha_inimigo(inimigo):
@@ -174,6 +182,14 @@ def desenha_tiro(tiro):
     if tiro.direcao == 4:
         colocar_imagem(TIRO_RIGHT, tela, tiro.x, tiro.y)
 
+def desenha_tiros(tiros):
+    '''
+    chama a funcao de desenha_tiro para a lista
+    :param tiros: Tiro
+    :return: Tiro
+    '''
+    for tiro in tiros:
+        desenha_tiro(tiro)
 
 def desenha_jogo(jogo):
     '''
@@ -183,7 +199,7 @@ def desenha_jogo(jogo):
     :return: tela(imagem)
     '''
     desenha_pers(jogo.personagem)
-    desenha_tiro(jogo.tiro)
+    desenha_tiros(jogo.tiro)
     desenha_inimigo(jogo.inimigo)
 
 
@@ -204,19 +220,21 @@ def trata_tecla_pers(personagem, tecla):
         return Personagem(personagem.x, personagem.y, VEL_PERSONAGEM, 0, 4)
     return personagem
 
-def trata_tecla_tiro(jogo, tecla):
+
+def trata_tecla_tiro(jog, tecla):
     '''
     responsavel por atirar, quando tecla == pg.K_SPACE
-    :param jogo: jogo
+    :param jog: jogo
     :param tecla: pg.<tecla>
     :return: Tiro
     '''
     if tecla == pg.K_SPACE:
-        tiro_x=jogo.personagem.x
-        tiro_y=jogo.personagem.y
-        return Tiro(tiro_x, tiro_y, jogo.personagem.direcao)
-    #else
-    return jogo.tiro
+        tiro_x = jog.personagem.x
+        tiro_y = jog.personagem.y
+        jog.tiro.append(Tiro(tiro_x, tiro_y, jog.personagem.direcao))
+        return jog.tiro
+    # else
+    return jog.tiro
 
 def trata_tecla_jogo(jogo, tecla):
     '''

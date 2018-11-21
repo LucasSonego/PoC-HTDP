@@ -16,7 +16,7 @@ x e y = posição do tiro na tela
 direcao = LEFT / RIGHT / UP / DOWN (direção)
 '''
 Tiro = definir_estrutura("Tiro", "x, y, direcao")
-TIRO_INICIAL = Tiro(100,100,0)
+TIRO_INICIAL = []
 
 '''Inimigo
 x e y = posição na tela
