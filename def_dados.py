@@ -16,10 +16,14 @@ direcao = LEFT / RIGHT / UP / DOWN (direção)
 '''
 Tiro = definir_estrutura("Tiro", "x, y, direcao")
 
+'''ltela:
+variavel que representa qual layout de tela carregar'''
+LTELA_INICIAL = 1
+
 '''Jogo:
 contem as estruturas Personagem e Tiro
 '''
-Jogo = definir_estrutura("Jogo","Personagem, Tiro")
+Jogo = definir_estrutura("Jogo","personagem, tiro")
 
 
 
