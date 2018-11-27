@@ -3,6 +3,27 @@
 
 from constantes import *
 from def_dados import *
+from math import *
+
+def distancia(x1, y1, x2, y2):
+    return sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2)
+
+
+def colide_inimigo(per, ini):
+    '''
+    Verifica se inimigo colide com personagem
+    :param per: Personagem
+    :param ini: Inimigo
+    :return: Boolean
+    '''
+    raio1 = LARGURA_INIMIGO//2
+    raio2 = LARGURA_INIMIGO//2
+    d = distancia(per.x, per.y, ini.x, ini.y)
+    if d <= raio1 + raio2:
+        return True
+    # else
+    return False
+
 
 def mover_perso(personagem):
     '''
@@ -124,6 +145,7 @@ def mover_tiros(tir):
     '''
     return [mover_tiro(tiro) for tiro in tir]
 
+
 def mover_jogo(jogo):
     '''
     função que é chamada no 'big bang' a cada tick
@@ -131,10 +153,13 @@ def mover_jogo(jogo):
     :param jogo: Jogo
     :return: Jogo
     '''
-    personagem=mover_perso(jogo.personagem)
-    tiros=mover_tiros(jogo.tiro)
-    inimigo=mover_inimigo(jogo.inimigo,jogo.personagem)
-    return Jogo(personagem, tiros, inimigo)
+    if (colide_inimigo(jogo.personagem, jogo.inimigo)):
+        return Jogo(jogo.personagem, jogo.tiro, jogo.inimigo, True)
+    else:
+        personagem=mover_perso(jogo.personagem)
+        tiros=mover_tiros(jogo.tiro)
+        inimigo=mover_inimigo(jogo.inimigo,jogo.personagem)
+    return Jogo(personagem, tiros, inimigo, jogo.game_over)
 
 
 def desenha_inimigo(inimigo):
@@ -153,7 +178,7 @@ def desenha_inimigo(inimigo):
 def desenha_pers(personagem):
     '''
     funçao responsavel por desenhar o perosnagem e suas direçoes
-    :param personagem: jogo.Personagen
+    :param personagem: jogo.personagem
     '''
     colocar_imagem(IMG_LAYOUT_1,tela,LARGURA//2,ALTURA//2)
     if personagem.direcao == 1:
@@ -191,6 +216,10 @@ def desenha_tiros(tiros):
     for tiro in tiros:
         desenha_tiro(tiro)
 
+def desenha_game_over():
+    texto_game_over = texto("GAME OVER", Fonte("comicsans", 50), Cor("red"))
+    colocar_imagem(texto_game_over, tela, LARGURA//2, ALTURA//2)
+
 def desenha_jogo(jogo):
     '''
     funçao que é chamada no 'big bang'
@@ -198,9 +227,12 @@ def desenha_jogo(jogo):
     :param jogo: Jogo
     :return: tela(imagem)
     '''
-    desenha_pers(jogo.personagem)
-    desenha_tiros(jogo.tiro)
-    desenha_inimigo(jogo.inimigo)
+    if jogo.game_over == False :
+        desenha_pers(jogo.personagem)
+        desenha_tiros(jogo.tiro)
+        desenha_inimigo(jogo.inimigo)
+    else:
+        desenha_game_over()
 
 
 def trata_tecla_pers(personagem, tecla):
@@ -246,7 +278,7 @@ def trata_tecla_jogo(jogo, tecla):
     '''
     perosnagem = trata_tecla_pers(jogo.personagem, tecla)
     tiro = trata_tecla_tiro(jogo, tecla)
-    return Jogo(perosnagem, tiro, jogo.inimigo)
+    return Jogo(perosnagem, tiro, jogo.inimigo, jogo.game_over)
 
 '''
 trata_tecla: Personagem, Tecla -> Personagem
@@ -291,4 +323,4 @@ def trata_tecla_solta_jogo(jogo, tecla):
     personagem=trata_solta_per(jogo.personagem, tecla)
     tiro=trata_solta_tiro(jogo.tiro, tecla)
 
-    return Jogo(personagem, tiro, jogo.inimigo)
+    return Jogo(personagem, tiro, jogo.inimigo, jogo.game_over)

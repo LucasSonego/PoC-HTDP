@@ -29,7 +29,7 @@ INIMIGO_INICIAL = Inimigo(600,600,0,0)
 '''Jogo:
 contem as estruturas Personagem e Tiro
 '''
-Jogo = definir_estrutura("Jogo","personagem, tiro, inimigo")
-JOGO_INICIAL = Jogo(PERSONAGEM_INICIAL,TIRO_INICIAL,INIMIGO_INICIAL)
+Jogo = definir_estrutura("Jogo","personagem, tiro, inimigo, game_over")
+JOGO_INICIAL = Jogo(PERSONAGEM_INICIAL,TIRO_INICIAL,INIMIGO_INICIAL, False)
 
 
