@@ -12,7 +12,8 @@ def main(inic):
              a_cada_tick=mover_jogo,
              desenhar=desenha_jogo,
              quando_tecla=trata_tecla_jogo,
-             quando_solta_tecla=trata_tecla_solta_jogo
+             quando_solta_tecla=trata_tecla_solta_jogo,
+             modo_debug=True
              )
 
 

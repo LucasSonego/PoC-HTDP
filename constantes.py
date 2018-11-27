@@ -51,7 +51,8 @@ TIRO_LEFT = espelhar(TIRO,True,False)
 TIRO_RIGHT = TIRO
 TIRO_UP = girar(TIRO,90)
 TIRO_DOWN = girar(TIRO,-90)
-
+LARGURA_TIRO = 60
+ALTURA_TIRO = 14
 
 '''Outras constantes'''
 #layout 1

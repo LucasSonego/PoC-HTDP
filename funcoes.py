@@ -5,6 +5,7 @@ from constantes import *
 from def_dados import *
 from math import *
 
+
 def distancia(x1, y1, x2, y2):
     return sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2)
 
@@ -23,6 +24,34 @@ def colide_inimigo(per, ini):
         return True
     # else
     return False
+
+def colide_tiro_inimigo(ini, tiro):
+    esquerda_ini = ini.x - LARGURA_INIMIGO//2
+    direita_ini = ini.x + LARGURA_INIMIGO//2
+    cima_ini = ini.y - ALTURA_INIMIGO//2
+    baixo_ini = ini.y + ALTURA_INIMIGO//2
+
+    esquerda_tiro = tiro.x - 30
+    direita_tiro = tiro.x + 30
+    cima_tiro = tiro.y - 7
+    baixo_tiro = tiro.y + 7
+
+
+    if direita_ini >= esquerda_tiro and \
+            esquerda_ini<= direita_tiro and \
+            baixo_ini >= cima_tiro and \
+            cima_ini <= baixo_tiro:
+        return tiro
+    return False
+
+def colide_tiros(ini, tiros):
+    for tiro in tiros:
+        if colide_tiro_inimigo(ini, tiro):
+            tiro_some = colide_tiro_inimigo(ini, tiro)
+            lista_tiro = tiro.remove(tiro_some)
+            return lista_tiro
+    return tiros
+
 
 
 def mover_perso(personagem):
@@ -156,8 +185,9 @@ def mover_jogo(jogo):
     if (colide_inimigo(jogo.personagem, jogo.inimigo)):
         return Jogo(jogo.personagem, jogo.tiro, jogo.inimigo, True)
     else:
+        lista_tiro = colide_tiros(jogo.inimigo, jogo.tiro)
         personagem=mover_perso(jogo.personagem)
-        tiros=mover_tiros(jogo.tiro)
+        tiros=mover_tiros(lista_tiro)
         inimigo=mover_inimigo(jogo.inimigo,jogo.personagem)
     return Jogo(personagem, tiros, inimigo, jogo.game_over)
 
