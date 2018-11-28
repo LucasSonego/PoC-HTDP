@@ -22,7 +22,7 @@ def colide_inimigo(per, ini):
     raio2 = LARGURA_INIMIGO//2
     d = distancia(per.x, per.y, ini.x, ini.y)
     if d <= raio1 + raio2:
-        return True
+        return False
     # else
     return False
 
@@ -86,25 +86,18 @@ def modulo(num):
         return -num
     return num
 
+def direcao_inimigo(inimigo,personagem):
 
-def mover_inimigo(inimigo,personagem):
-    '''
-    move o inimigo baseando-se na posicao do personagem
-    :param inimigo: jogo.inimigo
-    :param personagem: jogo.personagem
-    :return: Inimigo
-    '''
-    # TODO arrumar os bugs de movimentação
 
     distancia_x = personagem.x - inimigo.x
     distancia_x = modulo(distancia_x)
     distancia_y = personagem.y - inimigo.y
     distancia_y = modulo(distancia_y)
 
-    dx = inimigo.dx
-    dy = inimigo.dy
+    # dx = inimigo.dx
+    # dy = inimigo.dy
 
-    if distancia_x < 300 and  distancia_y < 300:
+    if distancia_x < 300 and distancia_y < 300:
 
         if -(inimigo.x - personagem.x) < -5:
             dx = -3
@@ -120,29 +113,104 @@ def mover_inimigo(inimigo,personagem):
         else:
             dy = 0
 
-    proximo_x = inimigo.x + dx
-    proximo_y = inimigo.y + dy
+        return Inimigo(inimigo.x,inimigo.y,dx,dy)
+    #else
+    return inimigo
+
+def limites_inimigo(inimigo,personagem):
+    '''
+
+    :param inimigo: jogo.inimigo
+    :param personagem: jogo.personagem
+    :return: Inimigo
+    '''
+
+    proximo_x = inimigo.x + inimigo.dx
+    proximo_y = inimigo.y + inimigo.dy
+
+    #logica encarniçada
+    #https://i.imgur.com/nPESkPx.png
+
+    if ((proximo_x < T1_LIMITE_MEIO_ESQ and proximo_y < T1_LIMITE_MEIO_CIMA) or
+        (proximo_x > T1_LIMITE_MEIO_DIR and proximo_y < T1_LIMITE_MEIO_CIMA) or
+        (proximo_x < T1_LIMITE_MEIO_ESQ and proximo_y > T1_LIMITE_MEIO_BAIXO) or
+        (proximo_x > T1_LIMITE_MEIO_DIR and proximo_y > T1_LIMITE_MEIO_BAIXO)):
+        #TODO
 
 
-    if not(T1_LIMITE_ESQUERDO < proximo_x < T1_LIMITE_DIREITO):
-        return Inimigo(inimigo.x, inimigo.y + dy, dx, dy)
+def mover_inimigo(inimigo,personagem):
+    '''
+    move o inimigo baseando-se na posicao do personagem
+    :param inimigo: jogo.inimigo
+    :param personagem: jogo.personagem
+    :return: Inimigo
+    '''
+    # TODO arrumar os bugs de movimentação
 
-    if not(T1_LIMITE_CIMA < proximo_y < T1_LIMITE_BAIXO):
-        return Inimigo(inimigo.x + dx, inimigo.y, dx, dy)
-
-    if (T1_LIMITE_MEIO_ESQ < proximo_x < T1_LIMITE_MEIO_DIR) and \
-            (T1_LIMITE_MEIO_CIMA < proximo_y < T1_LIMITE_MEIO_BAIXO):
-        return Inimigo(inimigo.x + dx, inimigo.y, dx, dy)
-
-    if (T1_LIMITE_MEIO_CIMA < proximo_y < T1_LIMITE_MEIO_BAIXO) and \
-            (T1_LIMITE_MEIO_ESQ < proximo_x < T1_LIMITE_MEIO_DIR):
-        return Inimigo(inimigo.x, inimigo.y + dy, dx, dy)
+    novo_inimigo = direcao_inimigo(inimigo, personagem)
+    if novo_inimigo.dx == inimigo.dx and novo_inimigo.dy == inimigo.dy:
+        return novo_inimigo
+    #else
+    return limites_inimigo(novo_inimigo,personagem)
 
 
 
-    nx = inimigo.x + dx
-    ny = inimigo.y + dy
-    return Inimigo(nx,ny,dx,dy)
+'''
+
+proximo_x = inimigo.x + dx
+proximo_y = inimigo.y + dy
+centro = ALTURA//2
+
+
+if (proximo_x > proximo_y) and (proximo_y < centro) and (T1_LIMITE_MEIO_ESQ < proximo_x < T1_LIMITE_MEIO_DIR):
+    if proximo_y > T1_LIMITE_MEIO_CIMA and ((proximo_y - T1_LIMITE_MEIO_CIMA) < 5):
+        dy = 0
+if (proximo_x < proximo_y) and (proximo_y > centro) and (T1_LIMITE_MEIO_ESQ < proximo_x < T1_LIMITE_MEIO_DIR):
+    if proximo_y < T1_LIMITE_MEIO_BAIXO and ((T1_LIMITE_MEIO_BAIXO - proximo_y) < 5):
+        dy = 0
+if (proximo_x > proximo_y) and (proximo_x > centro) and (T1_LIMITE_MEIO_CIMA < proximo_y < T1_LIMITE_MEIO_BAIXO):
+    if proximo_x > T1_LIMITE_MEIO_DIR and ((T1_LIMITE_MEIO_DIR - proximo_x) < 5):
+        dx = 0
+if (proximo_x < proximo_y) and (proximo_x < centro) and (T1_LIMITE_MEIO_CIMA < proximo_y < T1_LIMITE_MEIO_BAIXO):
+    if proximo_x < T1_LIMITE_MEIO_ESQ and ((proximo_x - T1_LIMITE_MEIO_ESQ) < 5):
+        dx = 0
+'''
+
+# if dx == 0 and dy == 0 and 210 < proximo_x  < 500 and 210 < proximo_y < 500:
+#     if proximo_x > T1_LIMITE_MEIO_ESQ and proximo_y > T1_LIMITE_MEIO_CIMA:
+#         dx = -3
+#         dy = -3
+#     if proximo_x >
+
+'''
+    if ((proximo_x < proximo_y) and (proximo_x < QUADRADO_X)):
+        novoax = novoax *(-1)
+    if proximo_x < proximo_y and proximo_y > QUADRADO_Y:
+        novoay = novoay *(-1)
+        novoax = novoax *(-1)
+    if proximo_x > proximo_y and proximo_x > QUADRADO_X:
+        novoax = novoax *(-1)
+    if proximo_x > proximo_y and proximo_x < QUADRADO_Y:
+        novoay = novoay *(-1)
+        novoax = novoax *(-1)
+'''
+
+# if not(T1_LIMITE_ESQUERDO < proximo_x < T1_LIMITE_DIREITO):
+#     return Inimigo(inimigo.x, inimigo.y + dy, dx, dy)
+#
+# if not(T1_LIMITE_CIMA < proximo_y < T1_LIMITE_BAIXO):
+#     return Inimigo(inimigo.x + dx, inimigo.y, dx, dy)
+#
+# if (T1_LIMITE_MEIO_ESQ < proximo_x < T1_LIMITE_MEIO_DIR) and \
+#         (T1_LIMITE_MEIO_CIMA < proximo_y < T1_LIMITE_MEIO_BAIXO):
+#     return Inimigo(inimigo.x + dx, inimigo.y, dx, dy)
+
+
+
+#
+# nx = inimigo.x + dx
+# ny = inimigo.y + dy
+# return Inimigo(nx,ny,dx,dy)
 
 
 

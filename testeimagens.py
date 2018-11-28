@@ -6,8 +6,11 @@ from constantes import *
 
 
 PosicaoMouse = definir_estrutura("PosicaoMouse","x,y")
-
 MOUSE_INICIAL = PosicaoMouse(0,0)
+
+RISCO_V = retangulo(LARGURA*2,1,Cor('red'))
+RISCO_H = retangulo(1,LARGURA*2,Cor('red'))
+
 
 STRX = "X "
 STRY = "Y "
@@ -27,18 +30,21 @@ def desenha(mouse):
 
     '''coloque aqui as imagens'''
     tela = colocar_imagem(IMG_LAYOUT_1, tela, LARGURA // 2, ALTURA // 2)
-    tela = colocar_imagem(PERSONAGEM_LEFT, tela, 100, 100)
-    tela = colocar_imagem(PERSONAGEM_RIGHT, tela, 100, 200)
-    tela = colocar_imagem(PERSONAGEM_UP, tela, 100, 300)
-    tela = colocar_imagem(PERSONAGEM_DOWN, tela, 100, 400)
+    # tela = colocar_imagem(PERSONAGEM_LEFT, tela, 100, 100)
+    # tela = colocar_imagem(PERSONAGEM_RIGHT, tela, 100, 200)
+    # tela = colocar_imagem(PERSONAGEM_UP, tela, 100, 300)
+    # tela = colocar_imagem(PERSONAGEM_DOWN, tela, 100, 400)
+    #
+    # tela = colocar_imagem(TIRO_LEFT, tela, 200, 100)
+    # tela = colocar_imagem(TIRO_RIGHT, tela, 200, 200)
+    # tela = colocar_imagem(TIRO_UP, tela, 200, 300)
+    # tela = colocar_imagem(TIRO_DOWN, tela, 200, 400)
+    #
+    # tela = colocar_imagem(INIMIGO_LEFT, tela, 300, 100)
+    # tela = colocar_imagem(INIMIGO_RIGHT, tela, 300, 200)
 
-    tela = colocar_imagem(TIRO_LEFT, tela, 200, 100)
-    tela = colocar_imagem(TIRO_RIGHT, tela, 200, 200)
-    tela = colocar_imagem(TIRO_UP, tela, 200, 300)
-    tela = colocar_imagem(TIRO_DOWN, tela, 200, 400)
-
-    tela = colocar_imagem(INIMIGO_LEFT, tela, 300, 100)
-    tela = colocar_imagem(INIMIGO_RIGHT, tela, 300, 200)
+    tela = colocar_imagem(RISCO_V, tela, mouse.x, mouse.y)
+    tela = colocar_imagem(RISCO_H, tela, mouse.x, mouse.y)
 
     tela = colocar_imagem(img_texto,tela,largura_imagem(img_texto),altura_imagem(img_texto))
 
