@@ -5,6 +5,7 @@ from constantes import *
 from def_dados import *
 from math import *
 
+#TODO refatorar
 
 def distancia(x1, y1, x2, y2):
     return sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2)
@@ -46,10 +47,10 @@ def colide_tiro_inimigo(ini, tiro):
 
 def colide_tiros(ini, tiros):
     for tiro in tiros:
-        if colide_tiro_inimigo(ini, tiro):
-            tiro_some = colide_tiro_inimigo(ini, tiro)
-            lista_tiro = tiro.remove(tiro_some)
-            return lista_tiro
+        tiro_some = colide_tiro_inimigo(ini, tiro)
+        if tiro_some:
+            tiros.remove(tiro_some)
+
     return tiros
 
 
@@ -84,6 +85,7 @@ def modulo(num):
     if num < 0:
         return -num
     return num
+
 
 def mover_inimigo(inimigo,personagem):
     '''
