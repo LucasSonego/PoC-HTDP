@@ -445,7 +445,8 @@ def trata_tecla_tiro(jog, tecla):
     if tecla == pg.K_SPACE:
         tiro_x = jog.personagem.x
         tiro_y = jog.personagem.y
-        jog.tiros.append(Tiro(tiro_x, tiro_y, jog.personagem.direcao))
+        if len(jog.tiros) <= 1 :
+            jog.tiros.append(Tiro(tiro_x, tiro_y, jog.personagem.direcao))
         return jog.tiros
     # else
     return jog.tiros
