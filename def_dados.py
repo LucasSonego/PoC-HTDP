@@ -33,3 +33,8 @@ Jogo = definir_estrutura("Jogo","personagem, tiros, inimigo, game_over")
 JOGO_INICIAL = Jogo(PERSONAGEM_INICIAL,TIRO_INICIAL,INIMIGO_INICIAL, False)
 
 
+'''
+DxDy
+contem dx e dy
+'''
+DxDy = definir_estrutura("DxDy","dx,dy")

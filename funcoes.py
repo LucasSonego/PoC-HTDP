@@ -163,16 +163,16 @@ def direcao_inimigo(inimigo,personagem):
         dx = move_dx(inimigo,personagem)
         dy = move_dy(inimigo,personagem)
 
-        return Inimigo(inimigo.x,inimigo.y,dx,dy)
+        return DxDy(dx,dy)
     #else
-    return inimigo
+    return DxDy(0,0)
 
 def limites_inimigo(inimigo,personagem):
     '''
 
     :param inimigo: jogo.inimigo
     :param personagem: jogo.personagem
-    :return: Inimigo
+    :return: DxDy
     '''
 
     proximo_x = inimigo.x + inimigo.dx
@@ -185,41 +185,46 @@ def limites_inimigo(inimigo,personagem):
         (proximo_x > LIMITE_MEIO_DIR and proximo_y < LIMITE_MEIO_CIMA) or
         (proximo_x < LIMITE_MEIO_ESQ and proximo_y > LIMITE_MEIO_BAIXO) or
         (proximo_x > LIMITE_MEIO_DIR and proximo_y > LIMITE_MEIO_BAIXO)):
-        novoinimigo = direcao_inimigo(inimigo,personagem)
-
+        novodxdy = direcao_inimigo(inimigo,personagem)
 
 
     else:
-        if proximo_y < (LIMITE_MEIO_CIMA + 10) and LIMITE_MEIO_ESQ < proximo_x < LIMITE_MEIO_DIR:
+        if proximo_y < LIMITE_MEIO_CIMA and LIMITE_MEIO_ESQ < proximo_x < LIMITE_MEIO_DIR:
             if proximo_y < LIMITE_MEIO_CIMA:
-                novoinimigo = direcao_inimigo(inimigo, personagem)
+                novodxdy = direcao_inimigo(inimigo,personagem)
             else:
-                novodx = move_dx(inimigo, personagem)
-                novoinimigo = Inimigo(inimigo.x, inimigo.y, novodx, 0)
+                novodx = move_dx(inimigo,personagem)
+                novodxdy = DxDy(novodx,0)
+
         if proximo_y > (LIMITE_MEIO_BAIXO - 10) and LIMITE_MEIO_ESQ < proximo_x < LIMITE_MEIO_DIR:
             if proximo_y > LIMITE_MEIO_BAIXO:
-                novoinimigo = direcao_inimigo(inimigo, personagem)
+                novodxdy = direcao_inimigo(inimigo,personagem)
             else:
-                novodx = move_dx(inimigo, personagem)
-                novoinimigo = Inimigo(inimigo.x, inimigo.y, novodx, 0)
+                novodx = move_dx(inimigo,personagem)
+                novodxdy = DxDy(novodx,0)
+
+
         if proximo_x < (LIMITE_MEIO_ESQ + 10) and LIMITE_MEIO_CIMA < proximo_y < LIMITE_MEIO_BAIXO:
             if proximo_x < LIMITE_MEIO_ESQ:
-                novoinimigo = direcao_inimigo(inimigo, personagem)
+                novodxdy = direcao_inimigo(inimigo, personagem)
             else:
                 novody = move_dy(inimigo, personagem)
-                novoinimigo = Inimigo(inimigo.x, inimigo.y, 0, novody)
+                novodxdy = DxDy(0,novody)
+
         if proximo_x > (LIMITE_MEIO_DIR - 10) and LIMITE_MEIO_CIMA < proximo_y < LIMITE_MEIO_BAIXO:
             if proximo_x > LIMITE_MEIO_ESQ:
-                novoinimigo = direcao_inimigo(inimigo, personagem)
+                novodxdy = direcao_inimigo(inimigo, personagem)
             else:
                 novody = move_dy(inimigo, personagem)
-                novoinimigo = Inimigo(inimigo.x, inimigo.y, 0, novody)
+                novodxdy = DxDy(0, novody)
 
 
 
-    novox = inimigo.x + novoinimigo.dx
-    novoy = inimigo.y + novoinimigo.dy
-    return Inimigo(novox,novoy,novoinimigo.dx,novoinimigo.dy)
+    novodx = novodxdy.dx
+    novody = novodxdy.dy
+    novox = inimigo.x + novodx
+    novoy = inimigo.y + novody
+    return Inimigo(novox,novoy,novodx,novody)
 
 def mover_inimigo(inimigo,personagem):
     '''
@@ -235,6 +240,7 @@ def mover_inimigo(inimigo,personagem):
         return novo_inimigo
     #else
     return limites_inimigo(novo_inimigo,personagem)
+
 
 
 '''
