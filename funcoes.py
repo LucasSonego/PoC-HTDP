@@ -264,13 +264,13 @@ def mover_tiro(tiro):
         return Tiro(novo, tiro.y, tiro.direcao)
     return tiro
 
-def mover_tiros(tir):
+def mover_tiros(tiros):
     '''
     Chama a funcao de mover_tiro para a lista de tiros
     :param tir: Tiro
     :return: Tiro
     '''
-    return [mover_tiro(tiro) for tiro in tir]
+    return [mover_tiro(tiro) for tiro in tiros]
 
 
 def mover_jogo(jogo):
@@ -281,11 +281,11 @@ def mover_jogo(jogo):
     :return: Jogo
     '''
     if (colide_inimigo(jogo.personagem, jogo.inimigo)):
-        return Jogo(jogo.personagem, jogo.tiro, jogo.inimigo, True)
+        return Jogo(jogo.personagem, jogo.tiros, jogo.inimigo, True)
     else:
-        lista_tiro = colide_tiros(jogo.inimigo, jogo.tiro)
+        lista_tiros = colide_tiros(jogo.inimigo, jogo.tiros)
         personagem=mover_perso(jogo.personagem)
-        tiros=mover_tiros(lista_tiro)
+        tiros=mover_tiros(lista_tiros)
         inimigo=mover_inimigo(jogo.inimigo,jogo.personagem)
     return Jogo(personagem, tiros, inimigo, jogo.game_over)
 
@@ -357,7 +357,7 @@ def desenha_jogo(jogo):
     '''
     if jogo.game_over == False :
         desenha_pers(jogo.personagem)
-        desenha_tiros(jogo.tiro)
+        desenha_tiros(jogo.tiros)
         desenha_inimigo(jogo.inimigo)
     else:
         desenha_game_over()
@@ -391,10 +391,10 @@ def trata_tecla_tiro(jog, tecla):
     if tecla == pg.K_SPACE:
         tiro_x = jog.personagem.x
         tiro_y = jog.personagem.y
-        jog.tiro.append(Tiro(tiro_x, tiro_y, jog.personagem.direcao))
-        return jog.tiro
+        jog.tiros.append(Tiro(tiro_x, tiro_y, jog.personagem.direcao))
+        return jog.tiros
     # else
-    return jog.tiro
+    return jog.tiros
 
 def trata_tecla_jogo(jogo, tecla):
     '''
@@ -449,6 +449,6 @@ def trata_tecla_solta_jogo(jogo, tecla):
     :return: Jogo
     '''
     personagem=trata_solta_per(jogo.personagem, tecla)
-    tiro=trata_solta_tiro(jogo.tiro, tecla)
+    tiro=trata_solta_tiro(jogo.tiros, tecla)
 
     return Jogo(personagem, tiro, jogo.inimigo, jogo.game_over)
