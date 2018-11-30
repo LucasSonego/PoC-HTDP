@@ -65,17 +65,17 @@ def mover_perso(personagem):
     posicao_y = personagem.y + personagem.dy
 
     #limites laterais para x
-    if posicao_x > T1_LIMITE_DIREITO or posicao_x < T1_LIMITE_ESQUERDO:
+    if posicao_x > LIMITE_DIREITO or posicao_x < LIMITE_ESQUERDO:
         return Personagem(personagem.x, personagem.y, personagem.dx, personagem.dy,
                           personagem.direcao)
     #limites laterais para y
-    if posicao_y < T1_LIMITE_CIMA or posicao_y > T1_LIMITE_BAIXO:
+    if posicao_y < LIMITE_CIMA or posicao_y > LIMITE_BAIXO:
         return Personagem(personagem.x, personagem.y, personagem.dx, personagem.dy,
                           personagem.direcao)
 
     #limites para o bloco do centro
-    if (T1_LIMITE_MEIO_ESQ < posicao_x < T1_LIMITE_MEIO_DIR) and\
-            (T1_LIMITE_MEIO_CIMA < posicao_y < T1_LIMITE_MEIO_BAIXO):
+    if (LIMITE_MEIO_ESQ < posicao_x < LIMITE_MEIO_DIR) and\
+            (LIMITE_MEIO_CIMA < posicao_y < LIMITE_MEIO_BAIXO):
         return Personagem(personagem.x, personagem.y, personagem.dx, personagem.dy,
                           personagem.direcao)
 
@@ -86,32 +86,40 @@ def modulo(num):
         return -num
     return num
 
-def direcao_inimigo(inimigo,personagem):
+def move_dx(inimigo,personagem):
 
+    if -(inimigo.x - personagem.x) < -5:
+        dx = -3
+    elif -(inimigo.x - personagem.x) > 5:
+        dx = 3
+    else:
+        dx = 0
+
+    return dx
+
+def move_dy(inimigo,personagem):
+
+    if -(inimigo.y - personagem.y) < -5:
+        dy = -3
+    elif -(inimigo.y - personagem.y) > 5:
+        dy = 3
+    else:
+        dy = 0
+
+    return dy
+
+def direcao_inimigo(inimigo,personagem):
 
     distancia_x = personagem.x - inimigo.x
     distancia_x = modulo(distancia_x)
+
     distancia_y = personagem.y - inimigo.y
     distancia_y = modulo(distancia_y)
 
-    # dx = inimigo.dx
-    # dy = inimigo.dy
-
     if distancia_x < 300 and distancia_y < 300:
 
-        if -(inimigo.x - personagem.x) < -5:
-            dx = -3
-        elif -(inimigo.x - personagem.x) > 5:
-            dx = 3
-        else:
-            dx = 0
-
-        if -(inimigo.y - personagem.y) < -5:
-            dy = -3
-        elif -(inimigo.y - personagem.y) > 5:
-            dy = 3
-        else:
-            dy = 0
+        dx = move_dx(inimigo,personagem)
+        dy = move_dy(inimigo,personagem)
 
         return Inimigo(inimigo.x,inimigo.y,dx,dy)
     #else
@@ -131,12 +139,32 @@ def limites_inimigo(inimigo,personagem):
     #logica encarniçada
     #https://i.imgur.com/nPESkPx.png
 
-    if ((proximo_x < T1_LIMITE_MEIO_ESQ and proximo_y < T1_LIMITE_MEIO_CIMA) or
-        (proximo_x > T1_LIMITE_MEIO_DIR and proximo_y < T1_LIMITE_MEIO_CIMA) or
-        (proximo_x < T1_LIMITE_MEIO_ESQ and proximo_y > T1_LIMITE_MEIO_BAIXO) or
-        (proximo_x > T1_LIMITE_MEIO_DIR and proximo_y > T1_LIMITE_MEIO_BAIXO)):
-        #TODO
+    if ((proximo_x < LIMITE_MEIO_ESQ and proximo_y < LIMITE_MEIO_CIMA) or
+        (proximo_x > LIMITE_MEIO_DIR and proximo_y < LIMITE_MEIO_CIMA) or
+        (proximo_x < LIMITE_MEIO_ESQ and proximo_y > LIMITE_MEIO_BAIXO) or
+        (proximo_x > LIMITE_MEIO_DIR and proximo_y > LIMITE_MEIO_BAIXO)):
+        novoinimigo = direcao_inimigo(inimigo,personagem)
 
+
+    else:
+        if proximo_y < LIMITE_MEIO_CIMA and LIMITE_MEIO_ESQ < proximo_x < LIMITE_MEIO_DIR:
+            if proximo_y < LIMITE_MEIO_CIMA:
+                novoinimigo = direcao_inimigo(inimigo,personagem)
+            else:
+                novodx = move_dx(inimigo,personagem)
+                novoinimigo = Inimigo(inimigo.x,inimigo.y,novodx,0)
+
+            if proximo_y > LIMITE_MEIO_BAIXO:
+                novoinimigo = direcao_inimigo(inimigo,personagem)
+            else:
+                novodx = move_dx(inimigo,personagem)
+                novoinimigo = Inimigo(inimigo.x,inimigo.y,novodx,0)
+
+
+
+    novox = inimigo.x + novoinimigo.dx
+    novoy = inimigo.y + novoinimigo.dy
+    return Inimigo(novox,novoy,novoinimigo.dx,novoinimigo.dy)
 
 def mover_inimigo(inimigo,personagem):
     '''
