@@ -22,7 +22,7 @@ def colide_inimigo(per, ini):
     raio2 = LARGURA_INIMIGO//2
     d = distancia(per.x, per.y, ini.x, ini.y)
     if d <= raio1 + raio2:
-        return False
+        return True
     # else
     return False
 
@@ -57,10 +57,10 @@ def colide_tiro_parede(tiro):
     :param tiro: Tiro
     :return: Tiro
     '''
-    if LIMITE_DIREITO <= tiro.x or \
-            LIMITE_ESQUERDO >= tiro.x or \
-            LIMITE_BAIXO <= (tiro.y - 10) or \
-            LIMITE_CIMA >= (tiro.y + 10 ):
+    if LIMITE_DIREITO <= tiro.x + LARGURA_TIRO // 3 or \
+            LIMITE_ESQUERDO >= tiro.x - LARGURA_TIRO // 3 or \
+            LIMITE_BAIXO <= tiro.y + ALTURA_TIRO // 2 or \
+            LIMITE_CIMA >= tiro.y - ALTURA_TIRO // 2 :
         return tiro
     return False
 
@@ -75,7 +75,7 @@ def colide_tiros_meio(tiro):
         return tiro
     return False
 
-def colide_tiros(ini, tiros):
+def colide_tiros(inimigo, tiros):
     '''
     Exclui os tiros que colidiram quando verificado com as outras funcoes
     :param ini: Inimigo
@@ -83,7 +83,7 @@ def colide_tiros(ini, tiros):
     :return: Lista Tiro
     '''
     for tiro in tiros:
-        tiro_some = colide_tiro_inimigo(ini, tiro)
+        tiro_some = colide_tiro_inimigo(inimigo, tiro)
         tiro_some_parede = colide_tiro_parede(tiro)
         tiro_some_meio = colide_tiros_meio(tiro)
         if tiro_some_meio:
@@ -222,7 +222,6 @@ def mover_inimigo(inimigo,personagem):
         return novo_inimigo
     #else
     return limites_inimigo(novo_inimigo,personagem)
-
 
 
 '''
@@ -450,9 +449,6 @@ def trata_tecla_jogo(jogo, tecla):
     tiro = trata_tecla_tiro(jogo, tecla)
     return Jogo(perosnagem, tiro, jogo.inimigo, jogo.game_over)
 
-'''
-trata_tecla: Personagem, Tecla -> Personagem
-Conforme aperta as teclas de movimento muda o dx e dy do personagem'''
 
 def trata_solta_per(personagem, tecla):
     '''
