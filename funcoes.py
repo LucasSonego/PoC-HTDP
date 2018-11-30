@@ -27,6 +27,12 @@ def colide_inimigo(per, ini):
     return False
 
 def colide_tiro_inimigo(ini, tiro):
+    '''
+    Verifica se o tiro entrou em colisao com o inimigo se sim retorna o tiro se nao retorna False
+    :param ini: Inimigo
+    :param tiro: Tiro
+    :return: Tiro
+    '''
     esquerda_ini = ini.x - LARGURA_INIMIGO//2
     direita_ini = ini.x + LARGURA_INIMIGO//2
     cima_ini = ini.y - ALTURA_INIMIGO//2
@@ -45,9 +51,45 @@ def colide_tiro_inimigo(ini, tiro):
         return tiro
     return False
 
+def colide_tiro_parede(tiro):
+    '''
+    Verifica se o tiro bateu nos limites laterais se sim retorna o tiro se nao retora False
+    :param tiro: Tiro
+    :return: Tiro
+    '''
+    if LIMITE_DIREITO <= tiro.x or \
+            LIMITE_ESQUERDO >= tiro.x or \
+            LIMITE_BAIXO <= (tiro.y - 10) or \
+            LIMITE_CIMA >= (tiro.y + 10 ):
+        return tiro
+    return False
+
+def colide_tiros_meio(tiro):
+    '''
+    Verifica se o tiro bateu no limite do meio se sim retorna o tiro se nao retorna False
+    :param tiro: Tiro
+    :return: Tiro
+    '''
+    if (LIMITE_MEIO_ESQ < tiro.x + LARGURA_TIRO // 2 and tiro.x - LARGURA_TIRO // 2 < LIMITE_MEIO_DIR) and\
+            (LIMITE_MEIO_CIMA < tiro.y + ALTURA_TIRO // 2 and tiro.y - ALTURA_TIRO // 2 < LIMITE_MEIO_BAIXO):
+        return tiro
+    return False
+
 def colide_tiros(ini, tiros):
+    '''
+    Exclui os tiros que colidiram quando verificado com as outras funcoes
+    :param ini: Inimigo
+    :param tiros: Lista Tiro
+    :return: Lista Tiro
+    '''
     for tiro in tiros:
         tiro_some = colide_tiro_inimigo(ini, tiro)
+        tiro_some_parede = colide_tiro_parede(tiro)
+        tiro_some_meio = colide_tiros_meio(tiro)
+        if tiro_some_meio:
+            tiros.remove(tiro_some_meio)
+        if tiro_some_parede:
+            tiros.remove(tiro_some_parede)
         if tiro_some:
             tiros.remove(tiro_some)
 
@@ -65,17 +107,17 @@ def mover_perso(personagem):
     posicao_y = personagem.y + personagem.dy
 
     #limites laterais para x
-    if posicao_x > LIMITE_DIREITO or posicao_x < LIMITE_ESQUERDO:
+    if posicao_x + M_LARGURA_PERSONAGEM > LIMITE_DIREITO or posicao_x - M_LARGURA_PERSONAGEM < LIMITE_ESQUERDO:
         return Personagem(personagem.x, personagem.y, personagem.dx, personagem.dy,
                           personagem.direcao)
     #limites laterais para y
-    if posicao_y < LIMITE_CIMA or posicao_y > LIMITE_BAIXO:
+    if posicao_y - M_ALTURA_PERSONAGEM < LIMITE_CIMA or posicao_y + M_ALTURA_PERSONAGEM> LIMITE_BAIXO:
         return Personagem(personagem.x, personagem.y, personagem.dx, personagem.dy,
                           personagem.direcao)
 
     #limites para o bloco do centro
-    if (LIMITE_MEIO_ESQ < posicao_x < LIMITE_MEIO_DIR) and\
-            (LIMITE_MEIO_CIMA < posicao_y < LIMITE_MEIO_BAIXO):
+    if (LIMITE_MEIO_ESQ < posicao_x + M_LARGURA_PERSONAGEM and posicao_x - M_LARGURA_PERSONAGEM < LIMITE_MEIO_DIR) and\
+            (LIMITE_MEIO_CIMA < posicao_y + M_ALTURA_PERSONAGEM and posicao_y - M_ALTURA_PERSONAGEM < LIMITE_MEIO_BAIXO):
         return Personagem(personagem.x, personagem.y, personagem.dx, personagem.dy,
                           personagem.direcao)
 
