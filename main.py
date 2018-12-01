@@ -18,4 +18,4 @@ def main(inic):
 
 
 
-main(JOGO_INICIAL)
+main(JOGO_L0)

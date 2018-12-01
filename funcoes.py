@@ -22,7 +22,7 @@ def colide_inimigo(per, ini):
     raio2 = LARGURA_INIMIGO//2
     d = distancia(per.x, per.y, ini.x, ini.y)
     if d <= raio1 + raio2:
-        return False
+        return True
     # else
     return False
 
@@ -52,10 +52,10 @@ def colide_inimigo_tiro(jogo):
     cima_ini = jogo.inimigo.y - ALTURA_INIMIGO//2
     baixo_ini = jogo.inimigo.y + ALTURA_INIMIGO//2
 
-    esquerda_tiro = jogo.tiros.x - 30
-    direita_tiro = jogo.tiros.x + 30
-    cima_tiro = jogo.tiros.y - 7
-    baixo_tiro = jogo.tiros.y + 7
+    esquerda_tiro = jogo.tiros.x - LARGURA_TIRO//2
+    direita_tiro = jogo.tiros.x + LARGURA_TIRO//2
+    cima_tiro = jogo.tiros.y - ALTURA_TIRO//2
+    baixo_tiro = jogo.tiros.y + ALTURA_TIRO//2
 
 
     if direita_ini >= esquerda_tiro and \
@@ -88,7 +88,7 @@ def colide_tiros(jogo):
     '''
     for tiro in jogo.tiros:
         for inimigo in jogo.inimigo:
-            some_inimigo_tiro = colide_inimigo_tiro(Jogo(jogo.personagem, tiro, inimigo, jogo.game_over))
+            some_inimigo_tiro = colide_inimigo_tiro(Jogo(jogo.personagem, tiro, inimigo, jogo.game_over, jogo.cont))
             if some_inimigo_tiro:
                 jogo.tiros.remove(some_inimigo_tiro.tiros)
                 jogo.inimigo.remove(some_inimigo_tiro.inimigo)
@@ -214,6 +214,22 @@ def mover_tiros(tiros):
     '''
     return [mover_tiro(tiro) for tiro in tiros]
 
+def att_layout(cont):
+    return LAYOUT[cont+1]
+
+def personagem_porta(personagem, cont):
+    esquerda_per = personagem.x - LARGURA_PERSONAGEM // 2
+    direita_per = personagem.x + LARGURA_PERSONAGEM // 2
+    cima_per = personagem.y - ALTURA_PERSONAGEM // 2
+    baixo_per = personagem.y + ALTURA_PERSONAGEM // 2
+
+    porta = PORTAS[cont]
+    return direita_per >= porta.x and \
+            esquerda_per <= porta.x and \
+            baixo_per >= porta.y and \
+            cima_per <= porta.y
+
+
 
 def mover_jogo(jogo):
     '''
@@ -222,14 +238,16 @@ def mover_jogo(jogo):
     :param jogo: Jogo
     :return: Jogo
     '''
+    if personagem_porta(jogo.personagem, jogo.cont):
+        jogo = att_layout(jogo.cont)
     if (colidem_inimigos(jogo.personagem, jogo.inimigo)):
-        return Jogo(jogo.personagem, jogo.tiros, jogo.inimigo, True)
+        return Jogo(jogo.personagem, jogo.tiros, jogo.inimigo, True, jogo.cont)
     else:
         lista = colide_tiros(jogo)
         personagem=mover_perso(jogo.personagem)
         tiros=mover_tiros(lista.tiros)
         inimigo=mover_inimigos(lista.inimigo,jogo.personagem)
-    return Jogo(personagem, tiros, inimigo, jogo.game_over)
+    return Jogo(personagem, tiros, inimigo, jogo.game_over, jogo.cont)
 
 
 def desenha_inimigo(inimigo):
@@ -351,9 +369,11 @@ def trata_tecla_jogo(jogo, tecla):
     :param tecla: pg.<tecla>
     :return: Jogo
     '''
+    if tecla == pg.K_KP_ENTER:
+        jogo = chama_inicio()
     perosnagem = trata_tecla_pers(jogo.personagem, tecla)
     tiro = trata_tecla_tiro(jogo, tecla)
-    return Jogo(perosnagem, tiro, jogo.inimigo, jogo.game_over)
+    return Jogo(perosnagem, tiro, jogo.inimigo, jogo.game_over, jogo.cont)
 
 
 def trata_solta_per(personagem, tecla):
@@ -395,4 +415,7 @@ def trata_tecla_solta_jogo(jogo, tecla):
     personagem=trata_solta_per(jogo.personagem, tecla)
     tiro=trata_solta_tiro(jogo.tiros, tecla)
 
-    return Jogo(personagem, tiro, jogo.inimigo, jogo.game_over)
+    return Jogo(personagem, tiro, jogo.inimigo, jogo.game_over, jogo.cont)
+
+def chama_inicio():
+    return JOGO_L0
