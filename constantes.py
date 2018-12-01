@@ -24,8 +24,10 @@ IMG_LAYOUT_4 = carregar_imagem('./Imagens/layout5.png')
 IMG_LAYOUT_4 = definir_dimensoes(IMG_LAYOUT_4,LARGURA,ALTURA)
 IMG_LAYOUT_5 = carregar_imagem('./Imagens/layout6.png')
 IMG_LAYOUT_5 = definir_dimensoes(IMG_LAYOUT_5,LARGURA,ALTURA)
+IMG_LAYOUT_6 = carregar_imagem('./Imagens/layout7.png')
+IMG_LAYOUT_6 = definir_dimensoes(IMG_LAYOUT_6,LARGURA,ALTURA)
 
-IMGS = [IMG_LAYOUT_0, IMG_LAYOUT_1, IMG_LAYOUT_2, IMG_LAYOUT_3, IMG_LAYOUT_4, IMG_LAYOUT_5]
+IMGS = [IMG_LAYOUT_0, IMG_LAYOUT_1, IMG_LAYOUT_2, IMG_LAYOUT_3, IMG_LAYOUT_4, IMG_LAYOUT_5, IMG_LAYOUT_6]
 
 #personagem
 LARGURA_PERSONAGEM = 40

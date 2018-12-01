@@ -49,7 +49,6 @@ INIMIGO_L3 =   [Inimigo(333,145,0,0),
                 Inimigo(254,570,0,0)]
 
 INIMIGO_L4 =   [Inimigo(161,125,0,0),
-                Inimigo(358,189,0,0),
                 Inimigo(565,112,0,0),
                 Inimigo(532,397,0,0),
                 Inimigo(563,612,0,0),
@@ -80,7 +79,7 @@ JOGO_L2 = Jogo(PERSONAGEM_L2, TIRO_INICIAL, INIMIGO_L2, False, 2)
 JOGO_L3 = Jogo(PERSONAGEM_L3, TIRO_INICIAL, INIMIGO_L3, False, 3)
 JOGO_L4 = Jogo(PERSONAGEM_L4, TIRO_INICIAL, INIMIGO_L4, False, 4)
 JOGO_L5 = Jogo(PERSONAGEM_L5, TIRO_INICIAL, INIMIGO_L5, False, 5)
-JOGO_L6 = Jogo(PERSONAGEM_L6, TIRO_INICIAL, INIMIGO_L5, False, 6)
+JOGO_L6 = Jogo(PERSONAGEM_L6, TIRO_INICIAL, INIMIGO_L6, False, 6)
 
 
 Porta = definir_estrutura("Porta", "x, y")
@@ -91,8 +90,9 @@ PORTA_L2 = Porta(600, 300)
 PORTA_L3 = Porta(600, 300)
 PORTA_L4 = Porta(300, 620)
 PORTA_L5 = Porta(350, 550)
+PORTA_L6 = Porta(1000,1000)
 
 
 LAYOUT = [JOGO_L0, JOGO_L1, JOGO_L2, JOGO_L3, JOGO_L4, JOGO_L5, JOGO_L6]
-PORTAS = [PORTA_L0, PORTA_L1, PORTA_L2, PORTA_L3, PORTA_L4, PORTA_L5]
+PORTAS = [PORTA_L0, PORTA_L1, PORTA_L2, PORTA_L3, PORTA_L4, PORTA_L5, PORTA_L6]
 
