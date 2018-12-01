@@ -49,17 +49,22 @@ def desenha(mouse):
     tela = colocar_imagem(img_texto,tela,largura_imagem(img_texto),altura_imagem(img_texto))
 
 
+
 def mouse(mouse,x,y,ev):
+    if ev == pg.MOUSEBUTTONDOWN:
+        print("Inimigo(%d,%d,0,0),"%(x,y))
+
     if ev == pg.MOUSEMOTION:
         return PosicaoMouse(x,y)
     #else
     return PosicaoMouse(mouse.x,mouse.y)
 
 
+
 def main(inic):
     big_bang(inic,
              desenhar=desenha, #Mundo -> imagem
-             quando_mouse=mouse #Mundo, mouse -> Mundo
+             quando_mouse=mouse,  #Mundo, mouse -> Mundo
              )
 
 main(MOUSE_INICIAL)
