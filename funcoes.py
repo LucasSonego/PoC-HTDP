@@ -26,29 +26,43 @@ def colide_inimigo(per, ini):
     # else
     return False
 
-def colide_tiro_inimigo(ini, tiro):
+def colidem_inimigos(per, inimigos):
+    '''
+    Verifica colisao para lista de inimigos
+    :param per: Personagem
+    :param inimigos: Inimigo
+    :return: Boolean
+    '''
+    for inimigo in inimigos:
+        if colide_inimigo(per, inimigo):
+            return True
+    #else
+    return False
+
+
+def colide_inimigo_tiro(jogo):
     '''
     Verifica se o tiro entrou em colisao com o inimigo se sim retorna o tiro se nao retorna False
     :param ini: Inimigo
     :param tiro: Tiro
     :return: Tiro
     '''
-    esquerda_ini = ini.x - LARGURA_INIMIGO//2
-    direita_ini = ini.x + LARGURA_INIMIGO//2
-    cima_ini = ini.y - ALTURA_INIMIGO//2
-    baixo_ini = ini.y + ALTURA_INIMIGO//2
+    esquerda_ini = jogo.inimigo.x - LARGURA_INIMIGO//2
+    direita_ini = jogo.inimigo.x + LARGURA_INIMIGO//2
+    cima_ini = jogo.inimigo.y - ALTURA_INIMIGO//2
+    baixo_ini = jogo.inimigo.y + ALTURA_INIMIGO//2
 
-    esquerda_tiro = tiro.x - 30
-    direita_tiro = tiro.x + 30
-    cima_tiro = tiro.y - 7
-    baixo_tiro = tiro.y + 7
+    esquerda_tiro = jogo.tiros.x - 30
+    direita_tiro = jogo.tiros.x + 30
+    cima_tiro = jogo.tiros.y - 7
+    baixo_tiro = jogo.tiros.y + 7
 
 
     if direita_ini >= esquerda_tiro and \
             esquerda_ini<= direita_tiro and \
             baixo_ini >= cima_tiro and \
             cima_ini <= baixo_tiro:
-        return tiro
+        return jogo
     return False
 
 def colide_tiro_parede(tiro):
@@ -75,26 +89,27 @@ def colide_tiros_meio(tiro):
         return tiro
     return False
 
-def colide_tiros(inimigo, tiros):
+def colide_tiros(jogo):
     '''
     Exclui os tiros que colidiram quando verificado com as outras funcoes
     :param ini: Inimigo
     :param tiros: Lista Tiro
     :return: Lista Tiro
     '''
-    for tiro in tiros:
-        tiro_some = colide_tiro_inimigo(inimigo, tiro)
-        tiro_some_parede = colide_tiro_parede(tiro)
-        tiro_some_meio = colide_tiros_meio(tiro)
-        if tiro_some_meio:
-            tiros.remove(tiro_some_meio)
-        if tiro_some_parede:
-            tiros.remove(tiro_some_parede)
-        if tiro_some:
-            tiros.remove(tiro_some)
+    for inimigo in jogo.inimigo:
+        for tiro in jogo.tiros:
+            some_inimigo_tiro = colide_inimigo_tiro(Jogo(jogo.personagem, tiro, inimigo, jogo.game_over))
+            tiro_some_parede = colide_tiro_parede(tiro)
+            tiro_some_meio = colide_tiros_meio(tiro)
+            if tiro_some_meio:
+                jogo.tiros.remove(tiro_some_meio)
+            if tiro_some_parede:
+                jogo.tiros.remove(tiro_some_parede)
+            if some_inimigo_tiro:
+                jogo.tiros.remove(some_inimigo_tiro.tiros)
+                jogo.inimigo.remove(some_inimigo_tiro.inimigo)
 
-    return tiros
-
+    return jogo
 
 
 def mover_perso(personagem):
@@ -237,11 +252,12 @@ def mover_inimigo(inimigo,personagem):
 
     novo_inimigo = direcao_inimigo(inimigo, personagem)
     if novo_inimigo.dx == inimigo.dx and novo_inimigo.dy == inimigo.dy:
-        return novo_inimigo
+        return inimigo
     #else
-    return limites_inimigo(novo_inimigo,personagem)
+    return inimigo
 
-
+def mover_inimigos(inimigos, per):
+    return[mover_inimigo(inimigo, per)for inimigo in inimigos]
 
 '''
 
@@ -340,13 +356,13 @@ def mover_jogo(jogo):
     :param jogo: Jogo
     :return: Jogo
     '''
-    if (colide_inimigo(jogo.personagem, jogo.inimigo)):
+    if (colidem_inimigos(jogo.personagem, jogo.inimigo)):
         return Jogo(jogo.personagem, jogo.tiros, jogo.inimigo, True)
     else:
-        lista_tiros = colide_tiros(jogo.inimigo, jogo.tiros)
+        lista = colide_tiros(jogo)
         personagem=mover_perso(jogo.personagem)
-        tiros=mover_tiros(lista_tiros)
-        inimigo=mover_inimigo(jogo.inimigo,jogo.personagem)
+        tiros=mover_tiros(lista.tiros)
+        inimigo=mover_inimigos(lista.inimigo,jogo.personagem)
     return Jogo(personagem, tiros, inimigo, jogo.game_over)
 
 
@@ -362,6 +378,10 @@ def desenha_inimigo(inimigo):
     #TODO quando 'inimigo.dx == 0' basearse na posicao x dopersonagem
     if inimigo.dx == 0:
         colocar_imagem(INIMIGO_LEFT, tela, inimigo.x, inimigo.y)
+
+def desenha_inimigos(inimigos):
+    for inimigo in inimigos:
+        desenha_inimigo(inimigo)
 
 def desenha_pers(personagem):
     '''
@@ -418,7 +438,7 @@ def desenha_jogo(jogo):
     if jogo.game_over == False :
         desenha_pers(jogo.personagem)
         desenha_tiros(jogo.tiros)
-        desenha_inimigo(jogo.inimigo)
+        desenha_inimigos(jogo.inimigo)
     else:
         desenha_game_over()
 

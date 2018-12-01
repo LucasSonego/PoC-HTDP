@@ -24,7 +24,7 @@ dx , dy = variação de x e y
 direcao = LEFT / RIGHT
 '''
 Inimigo = definir_estrutura("Inimigo", "x, y, dx, dy")
-INIMIGO_INICIAL = Inimigo(600,600,0,0)
+INIMIGO_INICIAL = [Inimigo(600,600,0,0), Inimigo(500, 500, 0, 0)]
 
 '''Jogo:
 contem as estruturas Personagem e Tiro
