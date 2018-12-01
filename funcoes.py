@@ -134,9 +134,9 @@ def modulo(num):
 def move_dx(inimigo,personagem):
 
     if -(inimigo.x - personagem.x) < -5:
-        dx = -3
+        dx = -VEL_INIMIGO
     elif -(inimigo.x - personagem.x) > 5:
-        dx = 3
+        dx = VEL_INIMIGO
     else:
         dx = 0
 
@@ -145,9 +145,9 @@ def move_dx(inimigo,personagem):
 def move_dy(inimigo,personagem):
 
     if -(inimigo.y - personagem.y) < -5:
-        dy = -3
+        dy = -VEL_INIMIGO
     elif -(inimigo.y - personagem.y) > 5:
-        dy = 3
+        dy = VEL_INIMIGO
     else:
         dy = 0
 
@@ -272,7 +272,6 @@ def desenha_pers(personagem):
     funçao responsavel por desenhar o perosnagem e suas direçoes
     :param personagem: jogo.personagem
     '''
-    colocar_imagem(IMG_LAYOUT_1,tela,LARGURA//2,ALTURA//2)
     if personagem.direcao == 1:
         colocar_imagem(PERSONAGEM_UP, tela, personagem.x, personagem.y)
     elif personagem.direcao == 2:
@@ -309,7 +308,7 @@ def desenha_tiros(tiros):
         desenha_tiro(tiro)
 
 def desenha_game_over():
-    texto_game_over = texto("GAME OVER", Fonte("comicsans", 50), Cor("red"))
+    texto_game_over = texto("GAME OVER          APERTE ENTER PARA REINICIAR", Fonte("comicsans", 50), Cor("red"))
     colocar_imagem(texto_game_over, tela, LARGURA//2, ALTURA//2)
 
 def desenha_jogo(jogo):
@@ -320,6 +319,8 @@ def desenha_jogo(jogo):
     :return: tela(imagem)
     '''
     if jogo.game_over == False :
+        fundo = IMGS [jogo.cont]
+        colocar_imagem(fundo, tela, LARGURA // 2, ALTURA // 2)
         desenha_pers(jogo.personagem)
         desenha_tiros(jogo.tiros)
         desenha_inimigos(jogo.inimigo)

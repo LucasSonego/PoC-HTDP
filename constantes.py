@@ -12,8 +12,20 @@ tela = criar_tela_base(LARGURA, ALTURA)
 '''Imagens'''
 
 #layouts
+IMG_LAYOUT_0 = carregar_imagem('./Imagens/layout1.png')
+IMG_LAYOUT_0 = definir_dimensoes(IMG_LAYOUT_0,LARGURA,ALTURA)
 IMG_LAYOUT_1 = carregar_imagem('./Imagens/layout2.png')
 IMG_LAYOUT_1 = definir_dimensoes(IMG_LAYOUT_1,LARGURA,ALTURA)
+IMG_LAYOUT_2 = carregar_imagem('./Imagens/layout3.png')
+IMG_LAYOUT_2 = definir_dimensoes(IMG_LAYOUT_2,LARGURA,ALTURA)
+IMG_LAYOUT_3 = carregar_imagem('./Imagens/layout4.png')
+IMG_LAYOUT_3 = definir_dimensoes(IMG_LAYOUT_3,LARGURA,ALTURA)
+IMG_LAYOUT_4 = carregar_imagem('./Imagens/layout5.png')
+IMG_LAYOUT_4 = definir_dimensoes(IMG_LAYOUT_4,LARGURA,ALTURA)
+IMG_LAYOUT_5 = carregar_imagem('./Imagens/layout6.png')
+IMG_LAYOUT_5 = definir_dimensoes(IMG_LAYOUT_5,LARGURA,ALTURA)
+
+IMGS = [IMG_LAYOUT_0, IMG_LAYOUT_1, IMG_LAYOUT_2, IMG_LAYOUT_3, IMG_LAYOUT_4, IMG_LAYOUT_5]
 
 #personagem
 LARGURA_PERSONAGEM = 40
@@ -70,3 +82,4 @@ LIMITE_BAIXO = ALTURA - 55
 FREQUENCIA = 50
 VEL_PERSONAGEM = 4
 VEL_TIRO = 10
+VEL_INIMIGO = 2
