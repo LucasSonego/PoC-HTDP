@@ -35,7 +35,7 @@ def colidem_inimigos(per, inimigos):
     '''
     for inimigo in inimigos:
         if colide_inimigo(per, inimigo):
-            return True
+            return False
     #else
     return False
 
@@ -96,18 +96,19 @@ def colide_tiros(jogo):
     :param tiros: Lista Tiro
     :return: Lista Tiro
     '''
-    for inimigo in jogo.inimigo:
-        for tiro in jogo.tiros:
+    for tiro in jogo.tiros:
+        for inimigo in jogo.inimigo:
             some_inimigo_tiro = colide_inimigo_tiro(Jogo(jogo.personagem, tiro, inimigo, jogo.game_over))
-            tiro_some_parede = colide_tiro_parede(tiro)
-            tiro_some_meio = colide_tiros_meio(tiro)
-            if tiro_some_meio:
-                jogo.tiros.remove(tiro_some_meio)
-            if tiro_some_parede:
-                jogo.tiros.remove(tiro_some_parede)
             if some_inimigo_tiro:
                 jogo.tiros.remove(some_inimigo_tiro.tiros)
                 jogo.inimigo.remove(some_inimigo_tiro.inimigo)
+        tiro_some_parede = colide_tiro_parede(tiro)
+        tiro_some_meio = colide_tiros_meio(tiro)
+        if tiro_some_meio:
+            jogo.tiros.remove(tiro_some_meio)
+        if tiro_some_parede:
+            jogo.tiros.remove(tiro_some_parede)
+
 
     return jogo
 
