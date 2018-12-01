@@ -22,7 +22,7 @@ def colide_inimigo(per, ini):
     raio2 = LARGURA_INIMIGO//2
     d = distancia(per.x, per.y, ini.x, ini.y)
     if d <= raio1 + raio2:
-        return True
+        return False
     # else
     return False
 
@@ -35,7 +35,7 @@ def colidem_inimigos(per, inimigos):
     '''
     for inimigo in inimigos:
         if colide_inimigo(per, inimigo):
-            return False
+            return True
     #else
     return False
 
@@ -78,16 +78,6 @@ def colide_tiro_parede(tiro):
         return tiro
     return False
 
-def colide_tiros_meio(tiro):
-    '''
-    Verifica se o tiro bateu no limite do meio se sim retorna o tiro se nao retorna False
-    :param tiro: Tiro
-    :return: Tiro
-    '''
-    if (LIMITE_MEIO_ESQ < tiro.x + LARGURA_TIRO // 2 and tiro.x - LARGURA_TIRO // 2 < LIMITE_MEIO_DIR) and\
-            (LIMITE_MEIO_CIMA < tiro.y + ALTURA_TIRO // 2 and tiro.y - ALTURA_TIRO // 2 < LIMITE_MEIO_BAIXO):
-        return tiro
-    return False
 
 def colide_tiros(jogo):
     '''
@@ -103,9 +93,6 @@ def colide_tiros(jogo):
                 jogo.tiros.remove(some_inimigo_tiro.tiros)
                 jogo.inimigo.remove(some_inimigo_tiro.inimigo)
         tiro_some_parede = colide_tiro_parede(tiro)
-        tiro_some_meio = colide_tiros_meio(tiro)
-        if tiro_some_meio:
-            jogo.tiros.remove(tiro_some_meio)
         if tiro_some_parede:
             jogo.tiros.remove(tiro_some_parede)
 
@@ -179,68 +166,10 @@ def direcao_inimigo(inimigo,personagem):
         dx = move_dx(inimigo,personagem)
         dy = move_dy(inimigo,personagem)
 
-        return DxDy(dx,dy)
+        return Inimigo(inimigo.x + dx,inimigo.y + dy,dx,dy)
     #else
-    return DxDy(0,0)
+    return Inimigo(inimigo.x,inimigo.y,0,0)
 
-def limites_inimigo(inimigo,personagem):
-    '''
-
-    :param inimigo: jogo.inimigo
-    :param personagem: jogo.personagem
-    :return: DxDy
-    '''
-
-    proximo_x = inimigo.x + inimigo.dx
-    proximo_y = inimigo.y + inimigo.dy
-
-    #logica encarniçada
-    #https://i.imgur.com/nPESkPx.png
-
-    if ((proximo_x < LIMITE_MEIO_ESQ and proximo_y < LIMITE_MEIO_CIMA) or
-        (proximo_x > LIMITE_MEIO_DIR and proximo_y < LIMITE_MEIO_CIMA) or
-        (proximo_x < LIMITE_MEIO_ESQ and proximo_y > LIMITE_MEIO_BAIXO) or
-        (proximo_x > LIMITE_MEIO_DIR and proximo_y > LIMITE_MEIO_BAIXO)):
-        novodxdy = direcao_inimigo(inimigo,personagem)
-
-
-    else:
-        if proximo_y < LIMITE_MEIO_CIMA and LIMITE_MEIO_ESQ < proximo_x < LIMITE_MEIO_DIR:
-            if proximo_y < LIMITE_MEIO_CIMA:
-                novodxdy = direcao_inimigo(inimigo,personagem)
-            else:
-                novodx = move_dx(inimigo,personagem)
-                novodxdy = DxDy(novodx,0)
-
-        if proximo_y > (LIMITE_MEIO_BAIXO - 10) and LIMITE_MEIO_ESQ < proximo_x < LIMITE_MEIO_DIR:
-            if proximo_y > LIMITE_MEIO_BAIXO:
-                novodxdy = direcao_inimigo(inimigo,personagem)
-            else:
-                novodx = move_dx(inimigo,personagem)
-                novodxdy = DxDy(novodx,0)
-
-
-        if proximo_x < (LIMITE_MEIO_ESQ + 10) and LIMITE_MEIO_CIMA < proximo_y < LIMITE_MEIO_BAIXO:
-            if proximo_x < LIMITE_MEIO_ESQ:
-                novodxdy = direcao_inimigo(inimigo, personagem)
-            else:
-                novody = move_dy(inimigo, personagem)
-                novodxdy = DxDy(0,novody)
-
-        if proximo_x > (LIMITE_MEIO_DIR - 10) and LIMITE_MEIO_CIMA < proximo_y < LIMITE_MEIO_BAIXO:
-            if proximo_x > LIMITE_MEIO_ESQ:
-                novodxdy = direcao_inimigo(inimigo, personagem)
-            else:
-                novody = move_dy(inimigo, personagem)
-                novodxdy = DxDy(0, novody)
-
-
-
-    novodx = novodxdy.dx
-    novody = novodxdy.dy
-    novox = inimigo.x + novodx
-    novoy = inimigo.y + novody
-    return Inimigo(novox,novoy,novodx,novody)
 
 def mover_inimigo(inimigo,personagem):
     '''
@@ -249,76 +178,12 @@ def mover_inimigo(inimigo,personagem):
     :param personagem: jogo.personagem
     :return: Inimigo
     '''
-    # TODO arrumar os bugs de movimentação
 
     novo_inimigo = direcao_inimigo(inimigo, personagem)
-    if novo_inimigo.dx == inimigo.dx and novo_inimigo.dy == inimigo.dy:
-        return inimigo
-    #else
-    return inimigo
+    return novo_inimigo
 
 def mover_inimigos(inimigos, per):
     return[mover_inimigo(inimigo, per)for inimigo in inimigos]
-
-'''
-
-proximo_x = inimigo.x + dx
-proximo_y = inimigo.y + dy
-centro = ALTURA//2
-
-
-if (proximo_x > proximo_y) and (proximo_y < centro) and (T1_LIMITE_MEIO_ESQ < proximo_x < T1_LIMITE_MEIO_DIR):
-    if proximo_y > T1_LIMITE_MEIO_CIMA and ((proximo_y - T1_LIMITE_MEIO_CIMA) < 5):
-        dy = 0
-if (proximo_x < proximo_y) and (proximo_y > centro) and (T1_LIMITE_MEIO_ESQ < proximo_x < T1_LIMITE_MEIO_DIR):
-    if proximo_y < T1_LIMITE_MEIO_BAIXO and ((T1_LIMITE_MEIO_BAIXO - proximo_y) < 5):
-        dy = 0
-if (proximo_x > proximo_y) and (proximo_x > centro) and (T1_LIMITE_MEIO_CIMA < proximo_y < T1_LIMITE_MEIO_BAIXO):
-    if proximo_x > T1_LIMITE_MEIO_DIR and ((T1_LIMITE_MEIO_DIR - proximo_x) < 5):
-        dx = 0
-if (proximo_x < proximo_y) and (proximo_x < centro) and (T1_LIMITE_MEIO_CIMA < proximo_y < T1_LIMITE_MEIO_BAIXO):
-    if proximo_x < T1_LIMITE_MEIO_ESQ and ((proximo_x - T1_LIMITE_MEIO_ESQ) < 5):
-        dx = 0
-'''
-
-# if dx == 0 and dy == 0 and 210 < proximo_x  < 500 and 210 < proximo_y < 500:
-#     if proximo_x > T1_LIMITE_MEIO_ESQ and proximo_y > T1_LIMITE_MEIO_CIMA:
-#         dx = -3
-#         dy = -3
-#     if proximo_x >
-
-'''
-    if ((proximo_x < proximo_y) and (proximo_x < QUADRADO_X)):
-        novoax = novoax *(-1)
-    if proximo_x < proximo_y and proximo_y > QUADRADO_Y:
-        novoay = novoay *(-1)
-        novoax = novoax *(-1)
-    if proximo_x > proximo_y and proximo_x > QUADRADO_X:
-        novoax = novoax *(-1)
-    if proximo_x > proximo_y and proximo_x < QUADRADO_Y:
-        novoay = novoay *(-1)
-        novoax = novoax *(-1)
-'''
-
-# if not(T1_LIMITE_ESQUERDO < proximo_x < T1_LIMITE_DIREITO):
-#     return Inimigo(inimigo.x, inimigo.y + dy, dx, dy)
-#
-# if not(T1_LIMITE_CIMA < proximo_y < T1_LIMITE_BAIXO):
-#     return Inimigo(inimigo.x + dx, inimigo.y, dx, dy)
-#
-# if (T1_LIMITE_MEIO_ESQ < proximo_x < T1_LIMITE_MEIO_DIR) and \
-#         (T1_LIMITE_MEIO_CIMA < proximo_y < T1_LIMITE_MEIO_BAIXO):
-#     return Inimigo(inimigo.x + dx, inimigo.y, dx, dy)
-
-
-
-#
-# nx = inimigo.x + dx
-# ny = inimigo.y + dy
-# return Inimigo(nx,ny,dx,dy)
-
-
-
 
 
 def mover_tiro(tiro):
