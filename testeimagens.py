@@ -24,7 +24,7 @@ def desenha(mouse):
     stringx = STRX + str(mouse.x)
     img_textox = texto((str(stringx)), Fonte("arial black", 20), Cor("green"))
     stringy = STRY + str(mouse.y)
-    img_textoy = texto((str(stringy)), Fonte("arial black", 20), Cor("green"))
+    img_textoy = texto((str(stringy)), Fonte("robot", 20), Cor("green"))
     img_texto = encima(img_textox,img_textoy)
     tela = criar_tela_base(LARGURA, ALTURA)
 
