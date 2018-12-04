@@ -72,7 +72,7 @@ INIMIGO_L6 = []
 '''Jogo:
 contem as estruturas Personagem e Tiro
 '''
-Jogo = definir_estrutura("Jogo","personagem, tiros, inimigos, game_over, cont")
+Jogo = definir_estrutura("Jogo","personagem, tiros, inimigos, game_over, layout")
 JOGO_L0 = Jogo(PERSONAGEM_L0, TIRO_INICIAL, INIMIGO_L0, False, 0)
 JOGO_L1 = Jogo(PERSONAGEM_L1, TIRO_INICIAL, INIMIGO_L1, False, 1)
 JOGO_L2 = Jogo(PERSONAGEM_L2, TIRO_INICIAL, INIMIGO_L2, False, 2)

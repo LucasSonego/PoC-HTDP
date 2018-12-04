@@ -15,24 +15,25 @@ def mover_jogo(jogo):
     :param jogo: Jogo
     :return: Jogo
     '''
-    if personagem_porta(jogo.personagem, jogo.cont):
-        jogo = att_layout(jogo.cont)
+    if personagem_porta(jogo.personagem, jogo.layout):
+        jogo = att_layout(jogo.layout)
     if (colidem_inimigos(jogo.personagem, jogo.inimigos)):
-        return Jogo(jogo.personagem, jogo.tiros, jogo.inimigos, True, jogo.cont)
+        return Jogo(jogo.personagem, jogo.tiros, jogo.inimigos, True, jogo.layout)
     else:
         lista = colide_tiros(jogo)
-        personagem=mover_perso(jogo.personagem)
+        personagem=mover_personagem(jogo.personagem)
         tiros=mover_tiros(lista.tiros)
         inimigo=mover_inimigos(lista.inimigos,jogo.personagem)
-    return Jogo(personagem, tiros, inimigo, jogo.game_over, jogo.cont)
+    return Jogo(personagem, tiros, inimigo, jogo.game_over, jogo.layout)
 
 
-def mover_perso(personagem):
+def mover_personagem(personagem):
     '''
     função responsavel por mover o personagem na tela
     :param personagem: Personagem
     :return: Personagem
     '''
+
     posicao_x = personagem.x + personagem.dx
     posicao_y = personagem.y + personagem.dy
 
@@ -40,6 +41,7 @@ def mover_perso(personagem):
     if posicao_x + M_LARGURA_PERSONAGEM > LIMITE_DIREITO or posicao_x - M_LARGURA_PERSONAGEM < LIMITE_ESQUERDO:
         return Personagem(personagem.x, personagem.y, personagem.dx, personagem.dy,
                           personagem.direcao)
+
     #limites laterais para y
     if posicao_y - M_ALTURA_PERSONAGEM < LIMITE_CIMA or posicao_y + M_ALTURA_PERSONAGEM> LIMITE_BAIXO:
         return Personagem(personagem.x, personagem.y, personagem.dx, personagem.dy,
@@ -69,28 +71,28 @@ def mover_tiro(tiro):
     :param tiro: Tiro
     :return: Tiro
     '''
-    if tiro.direcao == 1:
-        novo = tiro.y - VEL_TIRO
+    if tiro.direcao == 1: #W
+        novo = tiro.y - VELOCIDADE_TIRO
         return Tiro(tiro.x, novo, tiro.direcao)
-    if tiro.direcao == 2:
-        novo = tiro.x - VEL_TIRO
+    if tiro.direcao == 2: #A
+        novo = tiro.x - VELOCIDADE_TIRO
         return Tiro(novo, tiro.y, tiro.direcao)
-    if tiro.direcao == 3:
-        novo = tiro.y + VEL_TIRO
+    if tiro.direcao == 3: #S
+        novo = tiro.y + VELOCIDADE_TIRO
         return Tiro(tiro.x, novo, tiro.direcao)
-    if tiro.direcao == 4:
-        novo = tiro.x + VEL_TIRO
+    if tiro.direcao == 4: #D
+        novo = tiro.x + VELOCIDADE_TIRO
         return Tiro(novo, tiro.y, tiro.direcao)
     return tiro
 
-def mover_inimigos(inimigos, per):
+def mover_inimigos(inimigos, personagem):
     '''
     Chama a funcao de mover_inimigo para a lista de inimigos
     :param inimigos: Lista Inimigo
-    :param per: Personagem
+    :param personagem: Personagem
     :return: Lista Inimigo
     '''
-    return[mover_inimigo(inimigo, per)for inimigo in inimigos]
+    return[mover_inimigo(inimigo, personagem) for inimigo in inimigos]
 
 
 def mover_inimigo(inimigo,personagem):
@@ -124,18 +126,18 @@ def desenha_jogo(jogo):
     :return: Imagem
     '''
     if jogo.game_over == False :
-        fundo = IMGS [jogo.cont]
+        fundo = IMGS [jogo.layout]
         colocar_imagem(fundo, tela, LARGURA // 2, ALTURA // 2)
-        desenha_pers(jogo.personagem)
+        desenha_personagem(jogo.personagem)
         desenha_tiros(jogo.tiros)
         desenha_inimigos(jogo.inimigos)
     else:
         desenha_game_over()
 
 
-def desenha_pers(personagem):
+def desenha_personagem(personagem):
     '''
-    funçao responsavel por desenhar o perosnagem e suas direçoes
+    funçao responsavel por desenhar o personagem e suas direçoes
     :param personagem: Personagem
     '''
     if personagem.direcao == 1:
@@ -217,12 +219,12 @@ def trata_tecla_jogo(jogo, tecla):
     '''
     if tecla == pg.K_KP_ENTER:
         jogo = chama_inicio()
-    perosnagem = trata_tecla_pers(jogo.personagem, tecla)
+    personagem = trata_tecla_personagem(jogo.personagem, tecla)
     tiro = trata_tecla_tiro(jogo, tecla)
-    return Jogo(perosnagem, tiro, jogo.inimigos, jogo.game_over, jogo.cont)
+    return Jogo(personagem, tiro, jogo.inimigos, jogo.game_over, jogo.layout)
 
 
-def trata_tecla_pers(personagem, tecla):
+def trata_tecla_personagem(personagem, tecla):
     '''
     Conforme aperta as teclas de movimento muda o dx e dy do personagem
     :param personagem: Personagem
@@ -230,30 +232,30 @@ def trata_tecla_pers(personagem, tecla):
     :return: Personagem
     '''
     if tecla == pg.K_w:
-        return Personagem(personagem.x, personagem.y, 0, -VEL_PERSONAGEM, 1)
+        return Personagem(personagem.x, personagem.y, 0, -VELOCIDADE_PERSONAGEM, 1)
     if tecla == pg.K_a:
-        return Personagem(personagem.x, personagem.y, -VEL_PERSONAGEM, 0, 2)
+        return Personagem(personagem.x, personagem.y, -VELOCIDADE_PERSONAGEM, 0, 2)
     if tecla == pg.K_s:
-        return Personagem(personagem.x, personagem.y, 0, VEL_PERSONAGEM, 3)
+        return Personagem(personagem.x, personagem.y, 0, VELOCIDADE_PERSONAGEM, 3)
     if tecla == pg.K_d:
-        return Personagem(personagem.x, personagem.y, VEL_PERSONAGEM, 0, 4)
+        return Personagem(personagem.x, personagem.y, VELOCIDADE_PERSONAGEM, 0, 4)
     return personagem
 
-def trata_tecla_tiro(jog, tecla):
+def trata_tecla_tiro(jogo, tecla):
     '''
     responsavel por atirar, quando tecla == pg.K_SPACE
-    :param jog: jogo
+    :param jogo: jogo
     :param tecla: pg.<tecla>
     :return: Lista Tiro
     '''
     if tecla == pg.K_SPACE:
-        tiro_x = jog.personagem.x
-        tiro_y = jog.personagem.y
-        if len(jog.tiros) <= 1 :
-            jog.tiros.append(Tiro(tiro_x, tiro_y, jog.personagem.direcao))
-        return jog.tiros
+        tiro_x = jogo.personagem.x
+        tiro_y = jogo.personagem.y
+        if len(jogo.tiros) <= 1 :
+            jogo.tiros.append(Tiro(tiro_x, tiro_y, jogo.personagem.direcao))
+        return jogo.tiros
     # else
-    return jog.tiros
+    return jogo.tiros
 
 #FUNCOES TRATA SOLTA TECLA
 def trata_tecla_solta_jogo(jogo, tecla):
@@ -264,13 +266,12 @@ def trata_tecla_solta_jogo(jogo, tecla):
     :param tecla: pg.<tecla>
     :return: Jogo
     '''
-    personagem=trata_solta_per(jogo.personagem, tecla)
-    tiro=trata_solta_tiro(jogo.tiros, tecla)
+    personagem=trata_solta_personagem(jogo.personagem, tecla)
 
-    return Jogo(personagem, tiro, jogo.inimigos, jogo.game_over, jogo.cont)
+    return Jogo(personagem, jogo.tiros, jogo.inimigos, jogo.game_over, jogo.layout)
 
 
-def trata_solta_per(personagem, tecla):
+def trata_solta_personagem(personagem, tecla):
     '''
     funçao responsavel por parar o personagem quando o jogador solta a tecla
     :param personagem: jogo.personagem
@@ -287,39 +288,29 @@ def trata_solta_per(personagem, tecla):
         return Personagem(personagem.x, personagem.y, 0, personagem.dy, personagem.direcao)
     return personagem
 
-def trata_solta_tiro(tiro, tecla):
-    '''
-    Tinha que existir
-    :param tiro: jogo.tiro
-    :param tecla: pg.<tecla>
-    :return: Tiro(a mesma merda)
-    '''
-    if tecla==pg.K_SPACE:
-        return tiro
-    return tiro
 
 #FUNCOES DE COLISAO
-def colide_inimigo(per, ini):
+def colide_inimigo(personagem, inimigo):
     '''
     Verifica se inimigo colide com personagem
-    :param per: Personagem
-    :param ini: Inimigo
+    :param personagem: Personagem
+    :param inimigo: Inimigo
     :return: Boolean
     '''
     raio1 = LARGURA_INIMIGO//2
     raio2 = LARGURA_INIMIGO//2
-    d = distancia(per.x, per.y, ini.x, ini.y)
+    d = distancia(personagem.x, personagem.y, inimigo.x, inimigo.y)
     if d <= raio1 + raio2:
         return True
     # else
     return False
 
 
-def personagem_porta(personagem, cont):
+def personagem_porta(personagem, layout):
     '''
     Verifica se o personagem colide com a Porta
     :param personagem: Personagem
-    :param cont: int
+    :param layout: int
     :return: Boolean
     '''
     esquerda_per = personagem.x - LARGURA_PERSONAGEM
@@ -327,21 +318,21 @@ def personagem_porta(personagem, cont):
     cima_per = personagem.y - ALTURA_PERSONAGEM
     baixo_per = personagem.y + ALTURA_PERSONAGEM
 
-    porta = PORTAS[cont]
+    porta = PORTAS[layout]
     return direita_per >= porta.x and \
             esquerda_per <= porta.x and \
             baixo_per >= porta.y and \
             cima_per <= porta.y
 
-def colidem_inimigos(per, inimigos):
+def colidem_inimigos(personagem, inimigos):
     '''
     Verifica colisao para lista de inimigos
-    :param per: Personagem
+    :param personagem: Personagem
     :param inimigos: Inimigo
     :return: Boolean
     '''
     for inimigo in inimigos:
-        if colide_inimigo(per, inimigo):
+        if colide_inimigo(personagem, inimigo):
             return True
     #else
     return False
@@ -392,7 +383,7 @@ def colide_tiros(jogo):
     '''
     for tiro in jogo.tiros:
         for inimigo in jogo.inimigos:
-            some_inimigo_tiro = colide_inimigo_tiro(Jogo(jogo.personagem, tiro, inimigo, jogo.game_over, jogo.cont))
+            some_inimigo_tiro = colide_inimigo_tiro(Jogo(jogo.personagem, tiro, inimigo, jogo.game_over, jogo.layout))
             if some_inimigo_tiro:
                 jogo.tiros.remove(some_inimigo_tiro.tiros)
                 jogo.inimigos.remove(some_inimigo_tiro.inimigos)
@@ -434,9 +425,9 @@ def move_dx(inimigo,personagem):
     :return: Int
     '''
     if -(inimigo.x - personagem.x) < -5:
-        dx = -VEL_INIMIGO
+        dx = -VELOCIDADE_INIMIGO
     elif -(inimigo.x - personagem.x) > 5:
-        dx = VEL_INIMIGO
+        dx = VELOCIDADE_INIMIGO
     else:
         dx = 0
 
@@ -450,21 +441,21 @@ def move_dy(inimigo,personagem):
     :return: Int
     '''
     if -(inimigo.y - personagem.y) < -5:
-        dy = -VEL_INIMIGO
+        dy = -VELOCIDADE_INIMIGO
     elif -(inimigo.y - personagem.y) > 5:
-        dy = VEL_INIMIGO
+        dy = VELOCIDADE_INIMIGO
     else:
         dy = 0
 
     return dy
 
-def att_layout(cont):
+def att_layout(layout):
     '''
     Atualiza quando troca de salas
-    :param cont: int
+    :param layout: int
     :return: Jogo
     '''
-    return LAYOUT[cont+1]
+    return LAYOUT[layout + 1]
 
 
 def chama_inicio():
