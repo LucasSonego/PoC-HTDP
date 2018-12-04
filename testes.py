@@ -143,7 +143,11 @@ class Test(unittest.TestCase):
 
         self.assertEqual(mover_tiro(MOVER_TIRO_D), Tiro(100 + VELOCIDADE_TIRO, 100, 4)) # D
 
-
+    def test_mover_tiros(self):
+        self.assertEqual(mover_tiros([MOVER_TIRO_A, MOVER_TIRO_D]),
+                         [Tiro(100 - VELOCIDADE_TIRO, 100, 2), Tiro(100 + VELOCIDADE_TIRO, 100, 4)])
+        self.assertEqual(mover_tiros([MOVER_TIRO_W, MOVER_TIRO_D]),
+                         [Tiro(100, 100 - VELOCIDADE_TIRO, 1), Tiro(100 + VELOCIDADE_TIRO, 100, 4)])
 
     #linha 44
     def test_trata_tecla_personagem(self):
@@ -170,6 +174,27 @@ class Test(unittest.TestCase):
         self.assertEqual(colide_inimigo(Personagem(100, 100, 0, 0, 1), Inimigo(300, 300, 0, 0)), False) # nao colide
         self.assertEqual(colide_inimigo(Personagem(100, 100, 0, 0, 1), Inimigo(105, 105, 0, 0)), True)  # colide
 
+    def test_colidem_inimigos(self):
+        self.assertEqual(
+            colidem_inimigos(Personagem(100, 100, 0, 0, 1), [Inimigo(300, 300, 0, 0), Inimigo(105, 105, 0, 0)]), True)
+        self.assertEqual(
+            colidem_inimigos(Personagem(100, 100, 0, 0, 1), [Inimigo(300, 300, 0, 0), Inimigo(550, 550, 1, 0)]), False)
+        self.assertEqual(
+            colidem_inimigos(Personagem(100, 100, 0, 0, 1),
+                             [Inimigo(300, 300, 0, 0), Inimigo(550, 550, 1, 0), Inimigo(105, 105, 0, 0)]), True)
+
+    def test_trata_tecla_tiro(self):
+        self.assertEqual(
+            trata_tecla_tiro(Jogo(Personagem(100, 100, 0, 0, 1), [], [Inimigo(300, 300, 0, 0)], False, 2), pg.K_SPACE),
+            [Tiro(100, 100, 1)])
+        self.assertEqual(
+            trata_tecla_tiro(Jogo(Personagem(200, 200, 0, 0, 3), [Tiro(100, 100, 1)], [Inimigo(300, 300, 0, 0)], False, 2), pg.K_SPACE),
+            [Tiro(100, 100, 1), Tiro(200, 200, 3)])
+        self.assertEqual(
+            trata_tecla_tiro(
+                Jogo(Personagem(200, 200, 0, 0, 3), [Tiro(100, 100, 1), Tiro(200, 200, 3)], [Inimigo(300, 300, 0, 0)], False, 2),
+                pg.K_SPACE),
+            [Tiro(100, 100, 1), Tiro(200, 200, 3)])
 
     def test_move_dx(self):
         self.assertEqual(move_dx(Inimigo(200, 200, 0, 0), Personagem(100, 100, 0, 0, 1)), -VELOCIDADE_INIMIGO) # -dx
@@ -186,6 +211,16 @@ class Test(unittest.TestCase):
         self.assertEqual(colide_inimigo_tiro(COLIDE_TIRO), COLIDE_TIRO)
         self.assertEqual(colide_inimigo_tiro(NAO_COLIDE_TIRO), False)
 
+    def test_colide_tiros(self):
+        self.assertEqual(
+            colide_tiros(Jogo(PERSONAGEM_BASE_D, [Tiro(300, 300, 4)], [Inimigo(300, 300, 0, 0)], False, 0)),
+            Jogo(PERSONAGEM_BASE_D, [], [], False, 0))
+        self.assertEqual(
+            colide_tiros(Jogo(PERSONAGEM_BASE_D, [Tiro(300,300,4)], [Inimigo(400,400,0,0)], False, 0)),
+            Jogo(PERSONAGEM_BASE_D, [Tiro(300,300,4)], [Inimigo(400, 400, 0, 0)], False, 0))
+        self.assertEqual(
+            colide_tiros(Jogo(PERSONAGEM_BASE_D, [Tiro(LIMITE_ESQUERDO, 100, 1)], [Inimigo(400, 400, 0, 0)], False, 0)),
+                         Jogo(PERSONAGEM_BASE_D, [], [Inimigo(400, 400, 0, 0)], False, 0))
 
     def test_personagem_porta(self):
         self.assertEqual(personagem_porta(Personagem(100, 100, 0, 0, 1), 0), False) #nao colide
